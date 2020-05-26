@@ -6,6 +6,7 @@ library(sqldf)
 library(readr)
 library(plyr)
 library(gmodels)
+library(ggplot2)
 
 #Import data
 ist <- read_csv("~/files/ist_corrected.csv", trim_ws = FALSE,
@@ -30,3 +31,21 @@ fact_design <- CrossTable(ist$rxasp, ist$rxhep, expected = FALSE, prop.r = TRUE,
     dnn = c("Aspirin", "Heparine"))
 
 #Subset dataset for characteristics before randomisation
+  #Variables used in the paper for baseline characteristics
+vars_char <- c("rdelay", "rconsc", "sex", "age", "rsleep", "ratrial", "rct", "rvisinf", "rhep_", "rasp_", "rsbp", "rdef__3", "stype")
+ist_base_char  <- ist[vars_char]
+  #Easier but larger dataset (SAME THING)
+vars_char <- ist[1:27]
+
+#Export to .csv to analyse with Workspace tools from .csv file
+write.csv(ist_base_char, "~/files/baseline_characteristics.csv", row.names = FALSE)
+#From Workspace Analyse:
+  #Age box plot
+base_plot <- ggplot(dataset, aes(y = age))
+base_plot + geom_boxplot() + theme_classic()
+  #rdelay (delay between stroke and randomisation) box plot
+base_plot <- ggplot(dataset, aes(y = rdelay))
+base_plot + geom_boxplot() + theme_classic()
+  #rsbp (systolic blood preassure at randomisation) density plot
+base_plot <- ggplot(dataset, aes(x = rsbp))
+base_plot + geom_density(alpha = 0.5) + theme_classic()
