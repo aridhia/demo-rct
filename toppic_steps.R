@@ -13,23 +13,23 @@ colnames(subject_char) = tolower(colnames(subject_char))
 colnames(diagnosis) = tolower(colnames(diagnosis))
 
 #Remove columns empty due to annonimization
-drop_col_char <- names(subject_char) %in% c("prerandom_id", "initials", "hospitalno")
-subject_char <- subject_char[!drop_col_char]
+#Drop columsn with removed information due to annonimisation
+remove_annonn <- function(dataset) {
+   dataset[dataset == 'Removed'] <- NA
+   dataset <- dataset %>% select_if(~ !any(is.na(.)))
+   return(dataset)
+}
 
-drop_col_diag <- names(diagnosis) %in% c("crohnshistoryid", "operation1type", "operation2type", "operation3type",
-                                        "familyhistoryibd", "infliximabreasonforstopping", "infliximabdates", "azathioprinedates",
-                                        "azathioprinereasonsforstopping", "sixmpdates", "sixmpreasonforstopping")
+subject_char <- remove_annonn(subject_char)
+diagnosis <- remove_annonn(diagnosis)
+
 
 #Due to annonimization to know age of the subjects the variable studydayob is the day of birth 
 #from the day of the study
 subject_char$age = subject_char$studydaydob/-365
 
-#Export to csv
-write_csv(subject_char, "~/files/TOPPIC/own_df/subject_char.csv", row.names = FALSE)
+#Join tables
+baseline_char <- merge (x = subject_char, y = diagnosis, by="a_subjectno", all=TRUE)
 
 
-dataset %>%
-  group_by(treatmentno) %>%
-  summarise(mean_age = mean(age,
-    na.rm = TRUE
-  ))
+
