@@ -7,7 +7,9 @@ A clinical trial is a planned experiment involving humans, their aim is to asses
 * Phase III: Evaluation of the effectiveness of the new product
 * Phase IV: Post-marketing surveillance once the drug has reached the market
 
-<img align="right" width="100" height="100" src= "https://www.ildcollaborative.org/sites/default/files/styles/header_image/public/images/header-images/clinicaltrialphases_slide.jpg?itok=GAL_kxvx">
+<p align="centre">
+  <width="1000" height="1000" src= "https://www.ildcollaborative.org/sites/default/files/styles/header_image/public/images/header-images/clinicaltrialphases_slide.jpg?itok=GAL_kxvx">
+    </p>
 
 A **Randomized Controlled Trial (RCT)** is the gold-standard of clinical research. 
 * When **randomizing**, each subject is randomly allocated to a group of the trial, this reduces the selection and allocation bias. There are different ways of randomizing; in a simple randomization each group assignment is independent, whereas in a restricted randomization constraints are used to achieve a specific assignment ratio. Finally, randomization helps to achieve comparability of the control and treatment groups in all characteristics, so differences in outcome can be attributed to differences in treatment and not to different characteristics of the two groups.  
