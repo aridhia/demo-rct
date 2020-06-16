@@ -17,5 +17,18 @@ All of these characteristics reduce sources of bias when testing the effectivene
 ## TOPPIC STUDY
 <img align = "right" width="400" height = "330" src = "https://ars.els-cdn.com/content/image/1-s2.0-S2468125316300784-gr1.gif">
 
-TOPPIC study is a randomised, placebo-controlled, double-blind trial in which 29 UK hopitals participated. Participants in the trial were randomly assigned in a 1:1 ratio to recieve mercaptopurine or placebo. Patients, their carers, and physicians were masked to the treatment allocation. The trial followed the patient for up to 3 years.
+TOPPIC study is a randomised, placebo-controlled, double-blind trial in which 29 UK hopitals participated. 
+* Participants in the trial were randomly assigned in a 1:1 ratio to recieve mercaptopurine or placebo. Smoking status and recruiting site were use stratify the patients before randomisation.
+* Patients, their carers, and physicians were masked to the treatment allocation. The trial followed the patient for up to 3 years.
+
 The **primary endpoint** of the trial was the clinical recurrence of Crohn's disease and the need for anti-inflammatory treatment or surgical intervention.
+* Analyses were by intention to treat, meaning all the subjects that were randomised where included in the analysis. No matter the doses they had.
+* Cox Proportional Hazards model was adjusted to treatment, smoking status, recruitment site, previous treatments with mercaptopurine and azathioprine. 
+
+## Reproduction of the analysis plan
+
+This reproduction of the TOPPIC study statistical analysis plan is intended to run in an Aridhia Workspace. 
+
+### Data
+
+All the data from the study is publicaly available in https://datashare.is.ed.ac.uk/handle/10283/2196 
