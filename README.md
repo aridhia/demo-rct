@@ -16,14 +16,13 @@ A clinical trial is designed to test a particular hypothesis.
 The data from the trial has to provide evidence against H1 to suggest that H1 is true. The **Endpoints** are the measure that will be analysed and used to decide whether the H0 should be rejected or not. The nature of the primary endpoint will determinate the adequate statistical analysis test.
 
 ## TOPPIC STUDY
-<img align = "right" width="400" height = "330" src = "https://ars.els-cdn.com/content/image/1-s2.0-S2468125316300784-gr1.gif">
-
 TOPPIC study is a randomised, placebo-controlled, double-blind trial in which 29 UK hopitals participated. 
 * Participants in the trial were randomly assigned in a 1:1 ratio to recieve mercaptopurine or placebo. Smoking status and recruiting site were use stratify the patients before randomisation.
 * Patients, their carers, and physicians were masked to the treatment allocation. 
 * The trial followed the patient for up to 3 years.
 
 The **primary endpoint** of the trial was the clinical recurrence of Crohn's disease and the need for anti-inflammatory treatment or surgical intervention. As the enpoint is binary (occurence of the outcome or not), the statistical analysis test used was **Cox Proportional Hazards Model**, adjusted to treatment allocation, previous treatments with mercaptopurine and azathioprine and stratified by smoking status and recruitment site. Analyses were by intention to treat, meaning all the subjects that were randomised where included in the analysis. No matter the number of doses they recieved.
+<img align = "center" width="400" height = "330" src = "https://ars.els-cdn.com/content/image/1-s2.0-S2468125316300784-gr1.gif">
 
 ## Reproduction of the analysis plan
 
