@@ -22,8 +22,9 @@ TOPPIC study is a randomised, placebo-controlled, double-blind trial in which 29
 * The trial followed the patient for up to 3 years.
 
 The **primary endpoint** of the trial was the clinical recurrence of Crohn's disease and the need for anti-inflammatory treatment or surgical intervention. As the enpoint is binary (occurence of the outcome or not), the statistical analysis test used was **Cox Proportional Hazards Model**, adjusted to treatment allocation, previous treatments with mercaptopurine and azathioprine and stratified by smoking status and recruitment site. Analyses were by intention to treat, meaning all the subjects that were randomised where included in the analysis. No matter the number of doses they recieved.
-
-<img align ="center" width="400" height = "330" src = "https://ars.els-cdn.com/content/image/1-s2.0-S2468125316300784-gr1.gif">
+<p align="center">
+  <img width="460" height="300" src="https://ars.els-cdn.com/content/image/1-s2.0-S2468125316300784-gr1.gif">
+</p>
 
 ## Reproduction of the analysis plan
 
@@ -41,5 +42,6 @@ The documents available are:
 To start with, download the csv files and extract all of them in the folder called trial_data.
 
 ### Cleaning the data
-
+In the Anonymised data dictionary there is all the information about the what information is contained in the variables and the codification of each one. 
+When running the code baseline_char.R in the folder scripts, it generates a CSV file containing all the baseline characteristics of the subjects in the trial. In this file there is no information about the outcome.
 
