@@ -1,0 +1,4 @@
+Download the raw data from:
+https://datashare.is.ed.ac.uk/handle/10283/2196
+
+Extract all the csv files in this folder
