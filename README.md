@@ -23,7 +23,7 @@ TOPPIC study is a randomised, placebo-controlled, double-blind trial in which 29
 
 The **primary endpoint** of the trial was the clinical recurrence of Crohn's disease and the need for anti-inflammatory treatment or surgical intervention. As the enpoint is binary (occurence of the outcome or not), the statistical analysis test used was **Cox Proportional Hazards Model**, adjusted to treatment allocation, previous treatments with mercaptopurine and azathioprine and stratified by smoking status and recruitment site. Analyses were by intention to treat, meaning all the subjects that were randomised where included in the analysis. No matter the number of doses they recieved.
 
-<img align = "centre" width="400" height = "330" src = "https://ars.els-cdn.com/content/image/1-s2.0-S2468125316300784-gr1.gif">
+<img align ="center" width="400" height = "330" src = "https://ars.els-cdn.com/content/image/1-s2.0-S2468125316300784-gr1.gif">
 
 ## Reproduction of the analysis plan
 
