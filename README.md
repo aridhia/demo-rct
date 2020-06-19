@@ -44,4 +44,5 @@ To start with, download the csv files and extract all of them in the folder call
 ### Cleaning the data
 In the Anonymised data dictionary there is all the information about the what information is contained in the variables and the codification of each one. 
 When running the code baseline_char.R in the folder scripts, it generates a CSV file containing all the baseline characteristics of the subjects in the trial. In this file there is no information about the outcome.
+The resulting file will be allocated in the results folder under the name "baseline_characteristics.csv".
 
