@@ -43,6 +43,17 @@ To start with, download the csv files and extract all of them in the folder call
 
 ### Cleaning the data
 In the Anonymised data dictionary there is all the information about the what information is contained in the variables and the codification of each one. 
-When running the code baseline_char.R in the folder scripts, it generates a CSV file containing all the baseline characteristics of the subjects in the trial. In this file there is no information about the outcome.
+When running the code baseline_char.R in the folder "scripts", it generates a CSV file containing all the baseline characteristics of the subjects in the trial. In this file there is no information about the outcome.
 The resulting file will be allocated in the results folder under the name "baseline_characteristics.csv".
+
+## Adding Outcomes
+Running the file outcome.R allocated in the folder "scripts" generates a CSV called "outcomes.csv" that will be allocated in the "Results" folder.
+This file contains the most important baseline characteristics from the previous file, as well as information about whether the outcome happened in the subject and the time object for the survival analysis. The time object is:
+* The time of the outcome for those with clinical recurrence
+* The time of the last visit for those without clinical recurrence
+* The time of status change for those that dropped out of the trial
+
+## Statistical Analysis
+
+
 
