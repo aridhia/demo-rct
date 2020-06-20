@@ -107,5 +107,6 @@ baseline <- baseline %>%
 #WRITE CSV FILE
 ###This goes to results folder
 write.csv(baseline, "./demo_rct/results/baseline_factors.csv", row.names = FALSE)
-
+###This goes to the app folder
+write.csv(baseline, "./demo_rct/baseline_app/baseline_factors.csv", row.names = FALSE)
                   
