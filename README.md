@@ -28,8 +28,13 @@ The **primary endpoint** of the trial was the clinical recurrence of Crohn's dis
 
 ## Reproduction of the analysis plan
 
-This reproduction of the TOPPIC study statistical analysis plan is intended to run in an Aridhia Workspace. 
+This reproduction of the TOPPIC study statistical analysis plan is intended to run it in an Aridhia Workspace. 
 
+To perform the analysis from the Git, clone the repo in the desired directory
+ ```sh
+ git clone https://github.com/aridhia/demo-rct
+ cd demo-rct/demo_rct
+ ```
 ### Data
 
 All the data from the study is publicaly available in https://datashare.is.ed.ac.uk/handle/10283/2196.
@@ -41,10 +46,33 @@ The documents available are:
 
 To start with, download the csv files and extract all of them in the folder called trial_data.
 
+Working with git:
+
+```sh
+#Change the directory to trial_files
+cd trial_files/
+
+#Download the zip file containing all the csv
+curl " "https://datashare.is.ed.ac.uk/bitstream/handle/10283/2196/Data.zip?sequence=36&isAllowed=y" > trial_data.zip
+
+#Un zip the file
+unzip trial_data.zip
+
+#Return to the demo_rct directory
+cd ..
+```
+
 ### Cleaning the data
 In the Anonymised data dictionary there is all the information about the what information is contained in the variables and the codification of each one. 
 When running the code baseline_char.R in the folder "scripts", it generates a CSV file containing all the baseline characteristics of the subjects in the trial. In this file there is no information about the outcome.
 The resulting file will be allocated in the results folder under the name "baseline_characteristics.csv".
+
+The scripts can be run in Rstudio or an Rconsole
+```r
+#From the directory demo_rct
+setwd("./demo-rct/demo_rct")
+
+```
 
 ### App
 A Shiny App was developed to easily compare baseline characteristics between two groups of subjects. It can only be run after running the baseline_char.r file.
