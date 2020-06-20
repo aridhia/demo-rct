@@ -30,4 +30,4 @@ plot <- ggsurvplot(fit, data=outcomes, pval = TRUE,
     legend.labs = c("Mercaptopurine", "Placebo"),
     censor = FALSE,
     tables.y.text = FALSE)
-print(plot)
+plot
