@@ -84,7 +84,7 @@ outcomes <-
 
 #LAST VISIT
 ##Importing the data
-last_visit <- read_csv("./files/trial_files/tbla_VisitSchedule.csv") %>%
+last_visit <- read_csv("./demo_rct/trial_files/tbla_VisitSchedule.csv") %>%
     basic_edit() %>%
     col_class() %>%
     #There are all the visits a subject has done throughout the trial (subjectno repeated for every visit)
