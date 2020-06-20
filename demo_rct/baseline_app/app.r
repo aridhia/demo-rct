@@ -6,7 +6,7 @@ library(readr)
 
 #Importing data
 #This data has been generated with the script baseline.R
-baseline <- read_csv("./demo_rct/results/baseline_factors.csv", 
+baseline <- read_csv("./baseline_factors.csv", 
     #Change column types of subject numbers and centre number to characters
     col_types = cols(a_subjectno = col_character(), a_centreno = col_character()))
 
