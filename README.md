@@ -84,7 +84,7 @@ runApp("./demo_rct/baseline_app/app.r")
 ```
 
 ### Adding Outcomes
-Running the file outcome.R allocated in the folder "scripts" generates a CSV called "outcomes.csv" that will be allocated in the "Results" folder.
+Running the file outcome.R allocated in the folder "scripts" generates a CSV called "outcome.csv" that will be allocated in the "Results" folder.
 This file contains the most important baseline characteristics from the previous file, as well as information about whether the outcome happened in the subject and the time object for the survival analysis. The time object is:
 * The time of the outcome for those with clinical recurrence
 * The time of the last visit for those without clinical recurrence
@@ -95,6 +95,12 @@ source("./demo_rct/scripts/outcome.R")
 ```
 
 ### Statistical Analysis
+The cox_analysis.R script will print in the console the results for the adjusted and unadjusted analysis.
+
+The Cox analysis can be run:
+```r
+source("./demo_rct/scripts/cox_analysis.r")
+```
 
 
 
