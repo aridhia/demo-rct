@@ -15,7 +15,7 @@ A clinical trial is designed to test a particular hypothesis.
 * The **Alternative Hypothesis (H1)** is the statement of what the used statistical test is set up to establish.
 The data from the trial has to provide evidence against H1 to suggest that H1 is true. The **Endpoints** are the measure that will be analysed and used to decide whether the H0 should be rejected or not. The nature of the primary endpoint will determinate the adequate statistical analysis test.
 
-## TOPPIC STUDY
+## TOPPIC Study
 TOPPIC study is a randomised, placebo-controlled, double-blind trial in which 29 UK hopitals participated. 
 * Participants in the trial were randomly assigned in a 1:1 ratio to recieve mercaptopurine or placebo. Smoking status and recruiting site were use stratify the patients before randomisation.
 * Patients, their carers, and physicians were masked to the treatment allocation. 
@@ -52,6 +52,10 @@ This file contains the most important baseline characteristics from the previous
 * The time of the outcome for those with clinical recurrence
 * The time of the last visit for those without clinical recurrence
 * The time of status change for those that dropped out of the trial
+
+### App
+A Shiny App was developed to easily compare baseline characteristics between two groups of subjects.
+The app can be found in the folder baseline_app.
 
 ### Statistical Analysis
 
