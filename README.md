@@ -80,8 +80,7 @@ A Shiny App was developed to easily compare baseline characteristics between two
 The app can be found in the folder baseline_app.
 To run the Shiny App from the console:
 ```r
-
-
+runApp("./demo_rct/baseline_app/app.r")
 ```
 
 ### Adding Outcomes
@@ -90,6 +89,10 @@ This file contains the most important baseline characteristics from the previous
 * The time of the outcome for those with clinical recurrence
 * The time of the last visit for those without clinical recurrence
 * The time of status change for those that dropped out of the trial
+
+```r
+source("./demo_rct/scripts/outcomes.R")
+```
 
 ### Statistical Analysis
 
