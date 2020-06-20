@@ -32,7 +32,7 @@ col_class <- function(dataset) {
 
 #SUBJECT DATASET
 ##Importing the dataset
-subject_char <- read_csv("./demo_rct/trial_data/tbla_Subjects.csv") %>%
+subject_char <- read_csv("./demo_rct/trial_files/tbla_Subjects.csv") %>%
     #Applying the two functions to make general changes
     basic_edit() %>%
     col_class() %>%
@@ -44,7 +44,7 @@ subject_char <- read_csv("./demo_rct/trial_data/tbla_Subjects.csv") %>%
 
 #DISEASE HISTORY DATASET
 ##Importing the dataset
-crohn_history <- read_csv("~/demo_rct/trial_data/tbla_CrohnsHistory.csv") %>%
+crohn_history <- read_csv("./demo_rct/trial_files/tbla_CrohnsHistory.csv") %>%
     #General changes using the functions defined previously
     basic_edit() %>%
     col_class()
@@ -63,8 +63,8 @@ baseline <- baseline[, !colnames(baseline) %in% variables_drop]
 #CONVERSION OF SOME VARIABLES INTO FACTORS
 
 #Imorting Trial Master Lists with information of the coding of factors
-status <- read_csv("~/demo_rct/trial_data/tbla_TrialStatusMasterList.csv")
-treatment <- read_csv("~/demo_rct/trial_data/tbla_TreatmentNames.csv")
+status <- read_csv("./demo_rct/trial_files/tbla_TrialStatusMasterList.csv")
+treatment <- read_csv("./demo_rct/trial_files/tbla_TreatmentNames.csv")
 
 #Factor variables with options yes/no coded as 1/2
 factors_yn <- function(x) (factor(x, levels = c(1,2), labels = c("Yes", "No")))
@@ -106,8 +106,8 @@ baseline <- baseline %>%
 
 #WRITE CSV FILE
 ###This goes to results folder
-write.csv(baseline, "~/demo_rct/results/baseline_factors.csv", row.names = FALSE)
+write.csv(baseline, "./demo_rct/results/baseline_factors.csv", row.names = FALSE)
 ###This goes to the app folder
-write.csv(baseline, "~/demo_rct/baseline_app/baseline_factors.csv", row.names = FALSE)
+write.csv(baseline, "./demo_rct/baseline_app/baseline_factors.csv", row.names = FALSE)
 print("Baseline_factors.csv has been created")
                   
