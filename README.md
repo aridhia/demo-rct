@@ -91,7 +91,7 @@ This file contains the most important baseline characteristics from the previous
 * The time of status change for those that dropped out of the trial
 
 ```r
-source("./demo_rct/scripts/outcomes.R")
+source("./demo_rct/scripts/outcome.R")
 ```
 
 ### Statistical Analysis
