@@ -49,7 +49,7 @@ cox_adjusted = unite(cox_adjusted, "Adjusted_95%_CI", "a":"c", sep = "")
 row.names(cox_adjusted) <- c("Mercaptopurine", "Previous treatments with Mercaptopurine", "Pervious treatments with Azathioprine")
 
 #Print the table with the results of the adjusted cox analysis
-kable(cox_adjusted, col.names = c("Adjusted HR", "95% CI", "p value"))
+print(kable(cox_adjusted, col.names = c("Adjusted HR", "95% CI", "p value")))
 
 #Unadjusted Cox Regression Model - Analysis without the adjustment of previous treatments with Thiopurines, but still stratified for randomisation strata
 cox_results_unadjusted <- coxph(surv_object ~ treatmentno + strata(factor(smoker)) + strata(a_centreno), data = outcomes)
@@ -74,4 +74,4 @@ cox_unadjusted = unite(cox_unadjusted, "Unadjusted_95%_CI", "a":"c", sep = "")
 row.names(cox_unadjusted) <- c("Mercaptopurine")
 
 #Print the table with the results of the adjusted cox analysis
-kable(cox_unadjusted, col.names = c("Unadjusted HR", "95% CI", "p value")) 
+print(kable(cox_unadjusted, col.names = c("Unadjusted HR", "95% CI", "p value")))
