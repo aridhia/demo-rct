@@ -46,16 +46,16 @@ In the Anonymised data dictionary there is all the information about the what in
 When running the code baseline_char.R in the folder "scripts", it generates a CSV file containing all the baseline characteristics of the subjects in the trial. In this file there is no information about the outcome.
 The resulting file will be allocated in the results folder under the name "baseline_characteristics.csv".
 
+### App
+A Shiny App was developed to easily compare baseline characteristics between two groups of subjects. It can only be run after running the baseline_char.r file.
+The app can be found in the folder baseline_app.
+
 ### Adding Outcomes
 Running the file outcome.R allocated in the folder "scripts" generates a CSV called "outcomes.csv" that will be allocated in the "Results" folder.
 This file contains the most important baseline characteristics from the previous file, as well as information about whether the outcome happened in the subject and the time object for the survival analysis. The time object is:
 * The time of the outcome for those with clinical recurrence
 * The time of the last visit for those without clinical recurrence
 * The time of status change for those that dropped out of the trial
-
-### App
-A Shiny App was developed to easily compare baseline characteristics between two groups of subjects.
-The app can be found in the folder baseline_app.
 
 ### Statistical Analysis
 
