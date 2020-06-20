@@ -59,7 +59,7 @@ curl " "https://datashare.is.ed.ac.uk/bitstream/handle/10283/2196/Data.zip?seque
 unzip trial_data.zip
 
 #Return to the demo_rct directory
-cd ..
+cd ../..
 ```
 
 ### Cleaning the data
@@ -69,14 +69,20 @@ The resulting file will be allocated in the results folder under the name "basel
 
 The scripts can be run in Rstudio or an Rconsole
 ```r
-#From the directory demo_rct
-setwd("./demo-rct/demo_rct")
-
+#From the directory demo-rct
+setwd("./demo-rct")
+#Run the baseline_char.R script
+source("./demo_rct/scripts/baseline_char.R")
 ```
 
 ### App
 A Shiny App was developed to easily compare baseline characteristics between two groups of subjects. It can only be run after running the baseline_char.r file.
 The app can be found in the folder baseline_app.
+To run the Shiny App from the console:
+```r
+
+
+```
 
 ### Adding Outcomes
 Running the file outcome.R allocated in the folder "scripts" generates a CSV called "outcomes.csv" that will be allocated in the "Results" folder.
