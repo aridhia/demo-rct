@@ -1,0 +1,1 @@
+In this folder all the files generated from the .R scripts will be stored
