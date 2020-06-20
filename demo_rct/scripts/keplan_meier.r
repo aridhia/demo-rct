@@ -20,7 +20,7 @@ fit <- survfit(surv_object ~ treatmentno, data = outcomes)
 
 
 #Graph the fit
-ggsurvplot(fit, data=outcomes, pval = TRUE,
+plot <- ggsurvplot(fit, data=outcomes, pval = TRUE,
     risk.table = TRUE,
     xscale = "d_y",
     break.time.by = 365.25,
@@ -30,3 +30,4 @@ ggsurvplot(fit, data=outcomes, pval = TRUE,
     legend.labs = c("Mercaptopurine", "Placebo"),
     censor = FALSE,
     tables.y.text = FALSE)
+print(plot)
