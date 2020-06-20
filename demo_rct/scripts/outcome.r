@@ -37,7 +37,7 @@ baseline <- read_csv("./demo_rct/results/baseline_factors.csv") %>%
     
 #STATUS OF ARBITRATION
 #Dataset with information of whether each participant reached the endpoint (disease recurrence) or not and the time at whcih it happened
-status_arbitration <- read.csv("./demo_rct/trial_data/tbla_IMPStatusArbitration.csv") %>%
+status_arbitration <- read.csv("./demo_rct/trial_files/tbla_IMPStatusArbitration.csv") %>%
     basic_edit() %>%
     ##Primary endpoint date is treated as a factor when reading csv, have to change it to character before applying the col_class function
     mutate(studydayprimarydate = as.character(studydayprimarydate)) %>%
@@ -55,7 +55,7 @@ outcomes <- merge(baseline, status_arbitration, by = "a_subjectno", all = TRUE) 
 
 #CHANGE OF STATUS
 #Dataset with information about status changes, such as early withdrawls, dead, lost to follow up...
-change_status <- read_csv("./demo_rct/trial_data/tbla_StatusChangeHistory.csv") %>%
+change_status <- read_csv("./demo_rct/trial_files/tbla_StatusChangeHistory.csv") %>%
     basic_edit() %>%
     col_class() %>%
     #statuschangerowid is not found in any other table
@@ -84,7 +84,7 @@ outcomes <-
 
 #LAST VISIT
 ##Importing the data
-last_visit <- read_csv("./files/trial_data/tbla_VisitSchedule.csv") %>%
+last_visit <- read_csv("./files/trial_files/tbla_VisitSchedule.csv") %>%
     basic_edit() %>%
     col_class() %>%
     #There are all the visits a subject has done throughout the trial (subjectno repeated for every visit)
