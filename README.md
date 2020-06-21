@@ -34,24 +34,34 @@ Analyses were by intention to treat, meaning all the subjects that were randomis
 In Survival Analysis, two or more groups are compared with respect to the time to a specific event (clinical recurrence). In some cases, the event may not occur, then, this observation would be “censored” and survival time would be the time to this censored event. 
 
 Survival analysis use the following methods:
-* Keplan-Meier plots
+<details><summary> <b> 1. Keplan-Meier plots </b> </summary>
 
 The Kaplan-Meier plot and it is used to visualize the probability of survival in each of the time intervals.
 <p align="center">
   <img width="460" height="300" src="https://s3.amazonaws.com/cdn.graphpad.com/faq/1747/images/1747d.gif">
 </p>
 
-Keplan-Meier estimater is a non-parametric statistic that allow the estimation of the survival function. The statistic gives the probability that an individual patient will survive past a particular time.
+</details>
 
-* Log-Rank Test
+<details><summary> <b>2. Log-Rank Test</b> </summary>
 
-The log-rank test compares the survival curves of both groups. Its H<sub>0</sub> is that survival curves of two populations do not differ.
+The log-rank test compares the Kaplan-Meier survival curves of both groups. Its H<sub>0</sub> is that survival curves of two populations do not differ.
 
-* Cox Proportional Hazards Regression
+It is not suitable for continuous predictors. 
+
+</details>
+
+<details><summary> <b>3. Cox Proportional Hazards Regression</b> </summary>
 
 Describes the effect of continuous or categorical predictors on survival. Whereas the log-rank test compares two Kaplan-Meier survival curves (i.e. splitting the population into treatment groups), the Cox proportional hazards models considers other covariates when comparing survival of patients groups. 
+
 The Hazard Ratio (HR):
 
+<p align="center">
+  <img src="https://github.com/aridhia/demo-rct/blob/master/Capture.PNG">
+</p>
+
+</details>
 
 ## Reproduction of the analysis plan
 
@@ -60,7 +70,7 @@ This reproduction of the TOPPIC study statistical analysis plan is intended to r
 To perform the analysis from the Git, clone the repo in the desired directory
  ```sh
  git clone https://github.com/aridhia/demo-rct
- cd demo-rct/demo_rct
+ cd ./demo-rct
  ```
 ### Data
 
@@ -91,10 +101,11 @@ cd ../..
 
 ### Cleaning the data
 In the Anonymised data dictionary there is all the information about the what information is contained in the variables and the codification of each one. 
-When running the code baseline_char.R in the folder "scripts", it generates a CSV file containing all the baseline characteristics of the subjects in the trial. In this file there is no information about the outcome.
-The resulting file will be allocated in the results folder under the name "baseline_characteristics.csv".
 
-The scripts can be run in Rstudio or an Rconsole
+When running the script **baseline_char.R** in the folder "scripts", it generates a CSV file containing all the baseline characteristics of the subjects in the trial. In this file there is no information about the outcome.
+The resulting file will be allocated in the results folder under the name **baseline_characteristics.csv**.
+
+The scripts can be run in Rstudio or Rconsole:
 ```r
 #From the directory demo-rct
 setwd("./demo-rct")
@@ -103,7 +114,7 @@ source("./demo_rct/scripts/baseline_char.R")
 ```
 
 ### App
-A Shiny App was developed to easily compare baseline characteristics between two groups of subjects. It can only be run after running the baseline_char.r file.
+A Shiny App was developed to easily compare baseline characteristics between two groups of subjects. It uses the baseline_characteristics.csv file.
 The app can be found in the folder baseline_app.
 To run the Shiny App from the console:
 ```r
@@ -111,22 +122,30 @@ runApp("./demo_rct/baseline_app/app.r")
 ```
 
 ### Adding Outcomes
-Running the file outcome.R allocated in the folder "scripts" generates a CSV called "outcome.csv" that will be allocated in the "Results" folder.
+Running the script **outcome.R** allocated in the folder "scripts" generates a CSV called **outcome.csv** that will be allocated in the "Results" folder.
 This file contains the most important baseline characteristics from the previous file, as well as information about whether the outcome happened in the subject and the time object for the survival analysis. The time object is:
 * The time of the outcome for those with clinical recurrence
 * The time of the last visit for those without clinical recurrence
 * The time of status change for those that dropped out of the trial
 
+To run the script:
 ```r
 source("./demo_rct/scripts/outcome.R")
 ```
 
 ### Statistical Analysis
-First, the Keplan Meier plot:
+First, the **Keplan Meier plot**:
 ```r
 source("./demo_rct/scripts/keplan_meier.r")
 ```
-This script will print the plot in the Rstudio and also save a copy in an image format in the results folder. 
+This script will print the plot and save a copy as an image in the results folder. 
+
+Then, the **Log-Rank Test** can be performed running the script log_rank_test.r in the scripts folder.
+```r
+source("./demo_rct/scripts/log_rank_test.r")
+```
+This script will print the Log-Rank test results. 
+
 
 The cox_analysis.R script will print in the console the results for the adjusted and unadjusted analysis.
 The Cox analysis can be run:
