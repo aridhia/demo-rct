@@ -9,7 +9,7 @@ library(readr)
 library(forcats)
 library(tidyr)
 library(knitr)
-library(kableExtra)
+
 
 
 #Import data that will be used to do the analysis
