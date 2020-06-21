@@ -50,7 +50,7 @@ cox_adjusted = unite(cox_adjusted, "Adjusted_95%_CI", "a":"c", sep = "")
 row.names(cox_adjusted) <- c("Mercaptopurine", "Previous treatments with Mercaptopurine", "Pervious treatments with Azathioprine")
 
 #Print the table with the results of the adjusted cox analysis
-print(kable(cox_adjusted, col.names = c("Adjusted HR", "95% CI", "p value")))
+kable(cox_adjusted, col.names = c("Adjusted HR", "95% CI", "p value"))
 
 
 
