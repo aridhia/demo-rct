@@ -24,18 +24,33 @@ A clinical trial is designed to test a particular hypothesis.
 * The **Null Hypothesis (H<sub>0</sub>)** states that there is NO relationships between groups
 * The **Alternative Hypothesis (H<sub>1</sub>)** is the statement of what the used statistical test is set up to establish.
 The data from the trial has to provide evidence against H1 to suggest that H1 is true. 
+
 The **Endpoints** are the measure that will be analysed and used to decide whether the H<sub>0</sub> should be rejected or not. The nature of the primary endpoint will determinate the adequate statistical analysis test.
 
 The **primary endpoint** of the TOPPIC trial was the clinical recurrence of Crohn's disease. As the enpoint is binary (occurence of the outcome or not), the statistical analysis test used was **Cox Proportional Hazards Model**, adjusted to treatment allocation and previous treatments with mercaptopurine and azathioprine, and stratified by smoking status and recruitment site. 
 Analyses were by intention to treat, meaning all the subjects that were randomised where included in the analysis. No matter the number of doses they recieved.
 
 ### Survival Analysis
-In Survival Analysis, two or more groups are compared with respect to the time to a specific event (clinical recurrence).
-The term "censoring" refers to incomplete data. For some patients, you might know that he/she was followed for a certain time without an event occurring, but it is unkown whether the event ultimately occurred after the follow-up. The data on this particular patient is going to be censored after the last time point at which you know for sure that the patient had not experienced the outcome. 
+In Survival Analysis, two or more groups are compared with respect to the time to a specific event (clinical recurrence). In some cases, the event may not occur, then, this observation would be “censored” and survival time would be the time to this censored event. 
+
+Survival analysis use the following methods:
+* Keplan-Meier plots
+
+The Kaplan-Meier plot and it is used to visualize the probability of survival in each of the time intervals.
+<p align="center">
+  <img width="460" height="300" src="https://s3.amazonaws.com/cdn.graphpad.com/faq/1747/images/1747d.gif">
+</p>
 
 Keplan-Meier estimater is a non-parametric statistic that allow the estimation of the survival function. The statistic gives the probability that an individual patient will survive past a particular time.
-he log-rank test to compare survival curves of two groups. The log-rank test is a statistical hypothesis test that tests the null hypothesis that survival curves of two populations do not differ
 
+* Log-Rank Test
+
+The log-rank test compares the survival curves of both groups. Its H<sub>0</sub> is that survival curves of two populations do not differ.
+
+* Cox Proportional Hazards Regression
+
+Describes the effect of continuous or categorical predictors on survival. Whereas the log-rank test compares two Kaplan-Meier survival curves (i.e. splitting the population into treatment groups), the Cox proportional hazards models considers other covariates when comparing survival of patients groups. 
+The Hazard Ratio (HR):
 
 
 ## Reproduction of the analysis plan
