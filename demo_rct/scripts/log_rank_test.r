@@ -8,7 +8,7 @@ library(readr)
 
 #Import data that will be used to do the analysis
 #Outcomes dataset, elaborated witht outcome.R 
-outcomes <- read_csv("~/files/results/outcomes.csv")
+outcomes <- read_csv("./demo_rct/results/outcomes.csv")
 
 #First, create a survival object that consist of the time and whether the endpoint was reached
 surv_object <- Surv(outcomes$time, outcomes$primary.endpoint)
