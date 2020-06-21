@@ -95,12 +95,14 @@ source("./demo_rct/scripts/outcome.R")
 ```
 
 ### Statistical Analysis
-The cox_analysis.R script will print in the console the results for the adjusted and unadjusted analysis.
+First, the Keplan Meier plot:
+```r
+source("./demo_rct/scripts/keplan_meier.r")
+```
+This script will print the plot in the Rstudio and also save a copy in an image format in the results folder. 
 
+The cox_analysis.R script will print in the console the results for the adjusted and unadjusted analysis.
 The Cox analysis can be run:
 ```r
 source("./demo_rct/scripts/cox_analysis.r")
 ```
-
-
-
