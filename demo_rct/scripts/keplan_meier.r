@@ -18,7 +18,6 @@ surv_object <- Surv(outcomes$time, outcomes$primary.endpoint)
 #fit the Kaplan-Meier Curve. In this case only use treatmentno
 fit <- survfit(surv_object ~ treatmentno, data = outcomes)
 
-png(filename="./demo_rct/results/keplan_meier_plot.png")
 
 #Graph the fit
 plot <- ggsurvplot(fit, data=outcomes, pval = TRUE,
@@ -31,5 +30,7 @@ plot <- ggsurvplot(fit, data=outcomes, pval = TRUE,
     legend.labs = c("Mercaptopurine", "Placebo"),
     censor = FALSE,
     tables.y.text = FALSE)
-dev.off()
+#Show plot in Rstudio
 show(plot)
+#Save plot in the results folder
+ggsave("keplan_meier_plot.pdf", path = "./demo_rct/results/")
