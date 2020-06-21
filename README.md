@@ -8,23 +8,35 @@ A **Randomized Controlled Trial (RCT)** is the gold-standard of clinical researc
 * In **controlled trials**, there is one control group that is the group to whom those receiving the treatment are compared to. The control group will be given either the usual care (best current treatment) or a placebo (treatment with no active ingredient). 
 * Most of the times, RCT are **double-blind** studies; meaning that both, the patients and the investigator, are unaware of the group allocations. This method removes detection and performance bias. Contrarily, in an **open-label trial** group allocations are known by the patients and investigator.
 
-### Statistical Analysis Plan (SAP)
-The SAP contains all the statistical methods in such detail that should allow the reproducibility of the analyisis. The SAP must be developed before the RCT trial, thus ensuring that the analysis plan was decided without prior knowledge the final results and avoiding cherry-picking.
-A clinical trial is designed to test a particular hypothesis.
-* The **Null Hypothesis (H0)** states that there is NO relationships between groups
-* The **Alternative Hypothesis (H1)** is the statement of what the used statistical test is set up to establish.
-The data from the trial has to provide evidence against H1 to suggest that H1 is true. The **Endpoints** are the measure that will be analysed and used to decide whether the H0 should be rejected or not. The nature of the primary endpoint will determinate the adequate statistical analysis test.
-
 ## TOPPIC Study
 TOPPIC study is a randomised, placebo-controlled, double-blind trial in which 29 UK hopitals participated. 
 * Participants in the trial were randomly assigned in a 1:1 ratio to recieve mercaptopurine or placebo. Smoking status and recruiting site were use stratify the patients before randomisation.
 * Patients, their carers, and physicians were masked to the treatment allocation. 
 * The trial followed the patient for up to 3 years.
 
-The **primary endpoint** of the trial was the clinical recurrence of Crohn's disease and the need for anti-inflammatory treatment or surgical intervention. As the enpoint is binary (occurence of the outcome or not), the statistical analysis test used was **Cox Proportional Hazards Model**, adjusted to treatment allocation, previous treatments with mercaptopurine and azathioprine and stratified by smoking status and recruitment site. Analyses were by intention to treat, meaning all the subjects that were randomised where included in the analysis. No matter the number of doses they recieved.
 <p align="center">
   <img width="460" height="300" src="https://ars.els-cdn.com/content/image/1-s2.0-S2468125316300784-gr1.gif">
 </p>
+
+### Statistical Analysis Plan (SAP)
+The SAP contains all the statistical methods in such detail that should allow the reproducibility of the analyisis. The SAP must be developed before the RCT trial, thus ensuring that the analysis plan was decided without prior knowledge the final results and avoiding cherry-picking.
+A clinical trial is designed to test a particular hypothesis.
+* The **Null Hypothesis (H<sub>0</sub>)** states that there is NO relationships between groups
+* The **Alternative Hypothesis (H<sub>1</sub>)** is the statement of what the used statistical test is set up to establish.
+The data from the trial has to provide evidence against H1 to suggest that H1 is true. 
+The **Endpoints** are the measure that will be analysed and used to decide whether the H<sub>0</sub> should be rejected or not. The nature of the primary endpoint will determinate the adequate statistical analysis test.
+
+The **primary endpoint** of the TOPPIC trial was the clinical recurrence of Crohn's disease. As the enpoint is binary (occurence of the outcome or not), the statistical analysis test used was **Cox Proportional Hazards Model**, adjusted to treatment allocation and previous treatments with mercaptopurine and azathioprine, and stratified by smoking status and recruitment site. 
+Analyses were by intention to treat, meaning all the subjects that were randomised where included in the analysis. No matter the number of doses they recieved.
+
+### Survival Analysis
+In Survival Analysis, two or more groups are compared with respect to the time to a specific event (clinical recurrence).
+The term "censoring" refers to incomplete data. For some patients, you might know that he/she was followed for a certain time without an event occurring, but it is unkown whether the event ultimately occurred after the follow-up. The data on this particular patient is going to be censored after the last time point at which you know for sure that the patient had not experienced the outcome. 
+
+Keplan-Meier estimater is a non-parametric statistic that allow the estimation of the survival function. The statistic gives the probability that an individual patient will survive past a particular time.
+he log-rank test to compare survival curves of two groups. The log-rank test is a statistical hypothesis test that tests the null hypothesis that survival curves of two populations do not differ
+
+
 
 ## Reproduction of the analysis plan
 
