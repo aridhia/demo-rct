@@ -33,4 +33,4 @@ plot <- ggsurvplot(fit, data=outcomes, pval = TRUE,
 #Show plot in Rstudio
 show(plot)
 #Save plot in the results folder
-ggsave("keplan_meier_plot.png", path = "./demo_rct/results/")
+ggsave("keplan_meier_plot.png", plot = plot, path = "./demo_rct/results/")
