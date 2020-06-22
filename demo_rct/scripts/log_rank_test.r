@@ -16,4 +16,4 @@ surv_object <- Surv(outcomes$time, outcomes$primary.endpoint)
 #survdiff() can be used to compute the log-rank test comparing two survival curves
 
 log_rank <- survdiff(surv_object ~ treatmentno, data = outcomes)
-log_rank
+print(log_rank)
