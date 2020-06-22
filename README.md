@@ -87,7 +87,7 @@ Working with git:
 
 ```sh
 #Change the directory to trial_files
-cd trial_files/
+cd /demo_rct/trial_files/
 
 #Download the zip file containing all the csv
 curl " "https://datashare.is.ed.ac.uk/bitstream/handle/10283/2196/Data.zip?sequence=36&isAllowed=y" > trial_data.zip
