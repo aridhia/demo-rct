@@ -1,0 +1,205 @@
+\documentclass[twoside]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% STEP 2. Pre-setting Header configuration and document settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Main purpose of this section is to define document parameters
+
+% ------
+% Fonts and typesetting settings
+\usepackage[sc]{mathpazo}
+\usepackage[T1]{fontenc}
+\linespread{1.05} % Palatino needs more space between lines
+\usepackage{microtype}
+
+
+% ------
+% Page layout
+\usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt]{geometry}
+\usepackage[font=it]{caption}
+\usepackage{paralist}
+\usepackage{multicol}
+\usepackage{lipsum}
+
+% ------
+% Lettrines
+\usepackage{lettrine}
+
+
+% ------
+% Abstract
+\usepackage{abstract}
+	\renewcommand{\abstractnamefont}{\normalfont\bfseries}
+	\renewcommand{\abstracttextfont}{\normalfont\small\itshape}
+
+
+% ------
+% Titling (section/subsection)
+\usepackage{titlesec}
+\renewcommand\thesection{\Roman{section}}
+\titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{}
+
+
+% ------
+% Header/footer
+\usepackage{fancyhdr}
+	\pagestyle{fancy}
+	\fancyhead{}
+	\fancyfoot{}
+	\fancyhead[C]{Journal paper template $\bullet$ September 2019 $\bullet$ Vol. XXI, No. 1}
+	\fancyfoot[RO,LE]{\thepage}
+
+
+% ------
+% Clickable URLs (optional)
+\usepackage{hyperref}
+
+% ------
+% Maketitle metadata
+\title{\vspace{-15mm}%
+	\fontsize{24pt}{10pt}\selectfont
+	\textbf{Report generation demo}
+	}	
+    
+\author{%
+	\textsc{ARIDHIA} \\[2mm] % Author details
+	\normalsize	Aridhia Informatics Ltd, Edinburgh \\ % Isntitution 
+	\normalsize	\href{}{} % Email
+	}
+
+
+
+\date{}
+
+
+\begin{document}
+
+
+\maketitle
+\thispagestyle{fancy}
+\begin{abstract}
+\noindent	
+\lipsum[3]
+\end{abstract}
+
+\begin{multicols}{2}
+\section*{Use of the data set}
+\lipsum[1-2]
+
+
+<<message=FALSE, echo=FALSE, warning=FALSE>>=
+
+library(survival)
+library(survminer)
+library(readr)
+
+outcomes <- read_csv("~/files/results/outcomes.csv")
+
+surv_object <- Surv(outcomes$time, outcomes$primary.endpoint)
+
+fit <- survfit(surv_object ~ treatmentno, data = outcomes)
+
+
+ggsurvplot(fit, data=outcomes, pval = TRUE,
+    risk.table = TRUE,
+    xscale = "d_y",
+    break.time.by = 365.25,
+    xlab = "Time since randomisation (years)",
+    ylab = "Without clinical recurrence(%)",
+    legend = "bottom",
+    legend.labs = c("Mercaptopurine", "Placebo"),
+    censor = FALSE,
+    tables.y.text = FALSE)
+@
+
+%\includegraphics{plot_1.PNG}
+
+
+\begin{table*}[t]
+  \centering
+<<message=FALSE, echo=FALSE, warning=FALSE>>=
+
+library(forcats)
+library(tidyr)
+library(knitr)
+
+
+outcomes$treatmentno <- outcomes$treatmentno %>% as.factor() %>% forcats::fct_rev()
+
+cox_results_adjusted <- coxph(surv_object ~ treatmentno + strata(factor(smoker)) + strata(a_centreno) + factor(sixmp) + factor(azathioprine), data = outcomes)
+
+HR_adjusted <- round(exp(coef(cox_results_adjusted)), 2)
+CI_adjusted <- round(exp(confint(cox_results_adjusted)), 2)
+p_adjusted <- round(coef(summary(cox_results_adjusted))[,5], 3)
+
+colnames(CI_adjusted) <- c("Lower_Adjusted_CI", "Higher_Adjusted_CI")
+
+cox_adjusted <- as.data.frame(cbind(HR_adjusted, CI_adjusted, p_adjusted))
+cox_adjusted$a <- "("; cox_adjusted$b <- "-"; cox_adjusted$c <- ")"
+cox_adjusted <- cox_adjusted[,c("HR_adjusted", "a", "Lower_Adjusted_CI", "b", 
+    "Higher_Adjusted_CI", "c", "p_adjusted")]
+cox_adjusted = unite(cox_adjusted, "Adjusted_95%_CI", "a":"c", sep = "")
+row.names(cox_adjusted) <- c("Mercaptopurine", "Previous treatments with Mercaptopurine", "Pervious treatments with Azathioprine")
+
+kable(cox_adjusted, col.names = c("Adjusted HR", "95% CI", "p value"))
+
+@
+%\includegraphics{table_1.PNG}
+\caption{Adjusted Cox Analysis for Mercaptopurine and Previous treatments with Mercaptopurine or Azathioprine, stratified for smoking status and center number}
+\end{table*}
+
+\begin{table*}[t]
+  \centering
+ 
+<<message=FALSE, echo=FALSE, warning=FALSE>>=
+
+cox_results_unadjusted <- coxph(surv_object ~ treatmentno + strata(factor(smoker)) + strata(a_centreno), data = outcomes)
+
+HR_unadjusted <- round(exp(coef(cox_results_unadjusted)), 2)
+CI_unadjusted <- round(exp(confint(cox_results_unadjusted)), 2)
+p_unadjusted <- round(coef(summary(cox_results_unadjusted))[,5], 3)
+colnames(CI_unadjusted) <- c("Lower_Unadjusted_CI", "Higher_Unadjusted_CI")
+
+cox_unadjusted <- as.data.frame(cbind(HR_unadjusted, CI_unadjusted, p_unadjusted))
+
+
+cox_unadjusted$a <- "("; cox_unadjusted$b <- "-"; cox_unadjusted$c <- ")"
+
+cox_unadjusted <- cox_unadjusted[,c("HR_unadjusted", "a", "Lower_Unadjusted_CI", "b", "Higher_Unadjusted_CI", "c", "p_unadjusted")]
+cox_unadjusted = unite(cox_unadjusted, "Unadjusted_95%_CI", "a":"c", sep = "")
+row.names(cox_unadjusted) <- c("Mercaptopurine")
+
+kable(cox_unadjusted, col.names = c("Unadjusted HR", "95% CI", "p value"))  
+
+@
+%\includegraphics{table_2.PNG}
+\caption{Unadjusted Cox Analysis stratified for smoking status and center number}
+\end{table*}
+
+
+\lipsum[5]
+
+
+\lipsum[3]
+
+\section*{Findings}
+
+\lipsum[3]
+
+\section*{Conclusion} 
+\lipsum[1]
+
+\section*{References}
+
+\begin{itemize}
+    \item Example data catalogue entry \url{https://doi.org/10.34688/epadlcs_biomarkers_catalogue}
+    \item This figure was produced using data described at: \url{https://doi.org/10.34688/epadlcs_biomarkers}
+    \item related dataset: \url{https://doi.org/10.34688/epadlcs_v500.0_19.05.10}
+    \item Find out more about \href{https://www.aridhia.com}{Aridhia} online. 
+\end{itemize}
+
+\end{multicols}
+\end{document}
+
+\end{document}
+
