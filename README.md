@@ -90,7 +90,7 @@ Working with git:
 cd /demo_rct/trial_files/
 
 #Download the zip file containing all the csv
-curl " "https://datashare.is.ed.ac.uk/bitstream/handle/10283/2196/Data.zip?sequence=36&isAllowed=y" > trial_data.zip
+curl "https://datashare.is.ed.ac.uk/bitstream/handle/10283/2196/Data.zip?sequence=36&isAllowed=y" > trial_data.zip
 
 #Un zip the file
 unzip trial_data.zip
