@@ -76,10 +76,10 @@ To perform the analysis from the Git, clone the repo in the desired directory
 
 All the data from the study is publicaly available in https://datashare.is.ed.ac.uk/handle/10283/2196.
 The documents available are:
-* Clinical trial Protocol
-* Anonymised data dictionary
-* Clinical trial data in 31 CSV files
-* Annotaed Case Report forms
+* Clinical Trial Protocol
+* Anonymised Data Dictionary
+* Clinical Trial Data in 31 CSV files
+* Annotated Case Report forms
 
 To start with, download the csv files and extract all of them in the folder called trial_data.
 
@@ -147,8 +147,8 @@ source("./demo_rct/scripts/log_rank_test.r")
 This script will print the Log-Rank test results. 
 
 
-The cox_analysis.R script will print in the console the results for the adjusted and unadjusted analysis.
-The Cox analysis can be run:
+Finally, the **Cox Analysis** can be run:
 ```r
 source("./demo_rct/scripts/cox_analysis.r")
 ```
+The cox_analysis.R script will print in the console the results for the adjusted and unadjusted analysis.
