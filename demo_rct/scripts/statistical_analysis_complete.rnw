@@ -10,7 +10,7 @@ knit_hooks$set(error=muffleError)
 
 \section*{Keplan-Meier Graph}
 
-<<message=FALSE, echo=FALSE, warning=FALSE, error = FALSE, fig.align = 'center'>>=
+<<message=FALSE, echo=FALSE, warning=FALSE, fig.align = 'center'>>=
 
 library(survival)
 library(survminer)
