@@ -1,4 +1,4 @@
-
+\documentclass{slides}
 \begin{document}
 \title{Statistical Analysis Report}
 
