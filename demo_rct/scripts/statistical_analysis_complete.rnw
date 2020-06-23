@@ -1,5 +1,11 @@
 \documentclass{article}
 \begin{document}
+
+<<setup, include=FALSE, cache=FALSE>>=
+muffleError <- function(x,options) {}
+knit_hooks$set(error=muffleError)
+@
+
 \title{Statistical Analysis Report}
 
 \section*{Keplan-Meier Graph}
