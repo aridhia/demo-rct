@@ -87,7 +87,7 @@ Working with git:
 
 ```sh
 #Change the directory to trial_files
-cd /demo_rct/trial_files/
+cd ./demo_rct/trial_files/
 
 #Download the zip file containing all the csv
 curl "https://datashare.is.ed.ac.uk/bitstream/handle/10283/2196/Data.zip?sequence=36&isAllowed=y" > trial_data.zip
@@ -118,6 +118,7 @@ A Shiny App was developed to easily compare baseline characteristics between two
 The app can be found in the folder baseline_app.
 To run the Shiny App from the console:
 ```r
+library(shiny)
 runApp("./demo_rct/baseline_app/app.r")
 ```
 
@@ -152,3 +153,15 @@ Finally, the **Cox Analysis** can be run:
 source("./demo_rct/scripts/cox_analysis.r")
 ```
 The cox_analysis.R script will print in the console the results for the adjusted and unadjusted analysis.
+
+To generate a pdf with all the results generated above:
+```r
+knitr::knit2pdf("./demo_rct/scripts/statistical_analysis_complete.rnw")
+knitr::knit2pdf("./demo_rct/scripts/article_report.rnw")
+```
+This code saves the pdf file in the directory demo-rct, to move them to the folder results:
+
+```sh
+mv ./*.pdf ./demo_results/
+mv ./*.tex ./demo_results/
+```
