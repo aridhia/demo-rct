@@ -74,6 +74,10 @@
 
 \begin{document}
 
+<<setup, include=FALSE, cache=FALSE>>=
+muffleError <- function(x,options) {}
+knit_hooks$set(error=muffleError)
+@
 
 \maketitle
 \thispagestyle{fancy}
