@@ -10,7 +10,7 @@ library(survival)
 library(survminer)
 library(readr)
 
-outcomes <- read_csv("~/files/results/outcomes.csv")
+outcomes <- read_csv("./demo_rct/results/outcomes.csv")
 
 surv_object <- Surv(outcomes$time, outcomes$primary.endpoint)
 
