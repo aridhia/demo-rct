@@ -2,7 +2,7 @@
 \begin{document}
 \title{Statistical Analysis Report}
 
-\section{Keplan-Meier Graph}
+\section*{Keplan-Meier Graph}
 
 <<message=FALSE, echo=FALSE, warning=FALSE, fig.align = 'center'>>=
 
@@ -43,9 +43,9 @@ print(log_rank)
 @
 %\includegraphics{table1.PNG}
 
-\section{Cox Proportional Hazards Regression}
+\section*{Cox Proportional Hazards Regression}
 
-\subsection{Adjusted analysis}
+\subsection*{Adjusted analysis}
 
 <<message=FALSE, echo=FALSE, warning=FALSE>>=
 outcomes$treatmentno <- outcomes$treatmentno %>% 
@@ -84,7 +84,7 @@ kable(cox_adjusted, col.names = c("Adjusted HR", "95% CI", "p value"))
 @
 %\includegraphics{table2.PNG}
 
-\subsection{Unadjusted analysis}
+\subsection*{Unadjusted analysis}
 
 <<message=FALSE, echo=FALSE, warning=FALSE>>=
 #Unadjusted Cox Regression Model - Analysis without the adjustment of previous treatments with Thiopurines, but still stratified for randomisation strata
