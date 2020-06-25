@@ -102,4 +102,5 @@ outcomes <- merge(outcomes, last_visit, by = "a_subjectno", all = TRUE) %>%
 
 #Write final csv
 write.csv(outcomes, "./demo_rct/results/outcomes.csv", row.names = FALSE)
+write.csv(outcomes, "./demo_rct/survival_analysis/outcomes.csv", row.names = FALSE)
 print("Outcome.csv created")
