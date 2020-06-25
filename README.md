@@ -23,7 +23,7 @@ The SAP contains all the statistical methods in such detail that should allow th
 A clinical trial is designed to test a particular hypothesis.
 * The **Null Hypothesis (H<sub>0</sub>)** states that there is NO relationships between groups
 * The **Alternative Hypothesis (H<sub>1</sub>)** is the statement of what the used statistical test is set up to establish.
-The data from the trial has to provide evidence against H1 to suggest that H1 is true. 
+The data from the trial has to provide evidence against H<sub>1</sub> to suggest that H<sub>1</sub> is true. 
 
 The **Endpoints** are the measure that will be analysed and used to decide whether the H<sub>0</sub> should be rejected or not. The nature of the primary endpoint will determinate the adequate statistical analysis test.
 
@@ -113,15 +113,6 @@ setwd("./demo-rct")
 source("./demo_rct/scripts/baseline_char.R")
 ```
 
-### App
-A Shiny App was developed to easily compare baseline characteristics between two groups of subjects. It uses the baseline_characteristics.csv file.
-The app can be found in the folder baseline_app.
-To run the Shiny App from the console:
-```r
-library(shiny)
-runApp("./demo_rct/baseline_app/app.r")
-```
-
 ### Adding Outcomes
 Running the script **outcome.R** allocated in the folder "scripts" generates a CSV called **outcome.csv** that will be allocated in the "Results" folder.
 This file contains the most important baseline characteristics from the previous file, as well as information about whether the outcome happened in the subject and the time object for the survival analysis. The time object is:
@@ -145,8 +136,6 @@ Then, the **Log-Rank Test** can be performed running the script log_rank_test.r 
 ```r
 source("./demo_rct/scripts/log_rank_test.r")
 ```
-This script will print the Log-Rank test results. 
-
 
 Finally, the **Cox Analysis** can be run:
 ```r
@@ -154,14 +143,29 @@ source("./demo_rct/scripts/cox_analysis.r")
 ```
 The cox_analysis.R script will print in the console the results for the adjusted and unadjusted analysis.
 
-To generate a pdf with all the results generated above:
+When running:
 ```r
-knitr::knit2pdf("./demo_rct/scripts/statistical_analysis_complete.rnw")
 knitr::knit2pdf("./demo_rct/scripts/article_report.rnw")
 ```
-This code saves the pdf file in the directory demo-rct, to move them to the folder results:
+It generates an article-like report showing the Keplan-Meier plot and the Cox Analysis results.
 
 ```sh
+#To move the results to the folder results using GitBash
 mv ./*.pdf ./demo_results/
 mv ./*.tex ./demo_results/
+```
+
+### App
+A Shiny App was developed to easily visualise the survival analysis, it can be found in the folder Survival_Analysis. 
+
+It uses the outcomes.csv file to generate:
+* Characteristics table comparing subjects based on a stratification variable
+* Keplan-Meier plot
+
+It also allows to subset the population based on a condition to do subgroup analysis. 
+
+To run the Shiny App from the console:
+```r
+library(shiny)
+runApp("./demo_rct/Survival_Analysis/app.r")
 ```
