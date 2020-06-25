@@ -190,7 +190,7 @@ server <- function(input, output) {
      #Construct the Keplan-Meier plot 
      output$kep <- renderPlot({
             #Survival function - for ggsurvplot has to be inside the renderPlot function
-            kmdata <- surv_fit(as.formula(paste('Surv(time,primary.endpoint) ~',input$stratification)),data=subset_data(), type = 'keplan-meier')
+            kmdata <- surv_fit(as.formula(paste('Surv(time,primary.endpoint) ~',input$stratification)),data=subset_data())
             
             #Plotting the survival curves
             ggsurvplot(kmdata, pval = TRUE,
@@ -210,7 +210,7 @@ server <- function(input, output) {
       
    #Survival function outside renderPlot function
    runSur <- reactive({
-            survfit(as.formula(paste('Surv(time,primary.endpoint) ~', input$stratification)), data=subset_data(), type = 'keplan-meier')
+            survfit(as.formula(paste('Surv(time,primary.endpoint) ~', input$stratification)), data=subset_data())
       })
    
    #Survival table
