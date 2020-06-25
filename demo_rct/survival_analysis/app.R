@@ -12,7 +12,7 @@ library(dplyr)
 
 #Importing data
 #This data has been generated with the script outcome.R
-outcome <- read_csv("./outcomes.csv", 
+outcome <- read_csv("./demo_rct/survival_analysis/outcomes.csv", 
                     #Change column types of subject numbers and centre number to characters
                     col_types = cols(a_subjectno = col_character(), a_centreno = col_character()))
 
