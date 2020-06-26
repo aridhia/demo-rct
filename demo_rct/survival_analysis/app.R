@@ -9,12 +9,20 @@ library(readr)
 library(survminer)
 library(survival)
 library(dplyr)
+library(forcats)
+library(tidyr)
+
 
 #Importing data
 #This data has been generated with the script outcome.R
 outcome <- read_csv("./outcomes.csv", 
                     #Change column types of subject numbers and centre number to characters
                     col_types = cols(a_subjectno = col_character(), a_centreno = col_character()))
+
+#Treatment allocation has to be converted into a factor
+outcome$treatmentno <- outcome$treatmentno %>% as.factor() %>%
+  #By default the reference value of treatment is "Acive", has to be reversed for the cox analysis
+  forcats::fct_rev()
 
 
 ui <- fluidPage(
@@ -26,14 +34,7 @@ ui <- fluidPage(
       sidebarLayout(
             sidebarPanel(
                
-                  #Used to select the stratification variable for the analysis
-                  selectInput(
-                        inputId = "stratification",
-                        label = "Choose a stratification variable",
-                        choices = names(outcome),
-                        selected = "treatmentno",
-                  ),
-               
+              
                   #It's a conditional panel that will only appear in tab1, that is the tab for the subgroups
                   conditionalPanel(condition = "input.tabs == 1",
                                    radioButtons(
@@ -46,12 +47,21 @@ ui <- fluidPage(
                   
                   #This will only appear in the tab2
                   conditionalPanel(condition = "input.tabs == 2",
+                                   #Used to select the stratification variable for the analysis
+                                   selectInput(
+                                     inputId = "stratification",
+                                     label = "Choose a stratification variable",
+                                     choices = names(outcome),
+                                     selected = "treatmentno"
+                                   ),
+                                   #Select the variables included in the table
                                    selectInput(
                                          inputId = "variables",
                                          label = "Choose variables: ",
                                          choices = names(outcome),
                                          multiple = TRUE
                                    ),
+                                   #p value optional
                                    radioButtons(
                                          inputId = "p",
                                          label = "Show p-value?",
@@ -64,6 +74,17 @@ ui <- fluidPage(
                   conditionalPanel(condition = "input.tabs == 3",
                                    sliderInput('xvalue', 'Survival Years =', value = 0, min = 0, max = 4, step = 0.25, round = TRUE)
                                    
+                  ),
+              
+                  #Will appear in tab4
+                  conditionalPanel(condition = "input.tabs == 4",
+                                   selectInput(
+                                     inputId = "cox_variables",
+                                     label = "Choose variables to add to the model",
+                                     choices = names(outcome),
+                                     multiple = TRUE
+                                   )
+                    
                   ),
                
                   #Will only appear when the user has decided to subset a part of the population
@@ -103,16 +124,22 @@ ui <- fluidPage(
                               #Third tab displays the Keplan-Meier graph and a table with the survival probability at a chosen time
                               tabPanel("Keplan-Meier", 
                                        value = 3,
+                                       #Text before table
+                                       p(textOutput(outputId = "surv_caption")),
+                                       
+                                       #Table with survival probability
+                                       tableOutput(outputId = "survprob"),
+                                       
                                        #The output is a plot
                                        plotOutput(
                                              outputId = "kep", 
                                              height = "600px"
-                                       ),
-                                       #Table with survival probability
-                                       tableOutput(
-                                             outputId = "survprob"
                                        )
-                                       
+                              ),
+                              tabPanel("Cox Model", value = 4,
+                                      tableOutput(
+                                        outputId = "cox"
+                                        )
                               )
                   )
             )
@@ -127,6 +154,10 @@ server <- function(input, output) {
       output$caption <- renderText({
          "Subgroup being used: "
       })
+     
+     output$surv_caption <- renderText({
+          "Survival Probability: "
+     })
    })
    
    #The values shown in the third column of the subset tab, they depend on the column chosen
@@ -219,6 +250,43 @@ server <- function(input, output) {
                   mutate(time = time/365.25)
             table
       })
+  
+  #Cox Analysis fit
+  cox_fit <- reactive({
+    model <- as.formula(paste0("Surv(time, primary.endpoint) ~ ", paste0(input$cox_variables, collapse = "+")))
+    coxph(model, data = subset_data())
+  })
+  
+  #Building the cox table
+  output$cox <- renderTable({
+    validate(need(input$cox_variables, "Please select variables to add to the model"))
+    
+    #Extracting HR from the model
+    HR <- round(exp(coef(cox_fit())), 2)
+    
+    #Extracting CI from the model
+    CI <- round(exp(confint(cox_fit())), 2)
+    #Column names for CI
+    colnames(CI) <. c("Lower_CI","Higher_CI")
+    
+    #Extracting p value from the model
+    p <- round(coef(summary(cox_fit()))[,5], 3)
+    
+    #Putting everything together to a dataframe
+    cox_model <- as.data.frame(cbind(HR, CI, p), col.names("HR", "95% CI", "p value"))
+    
+    #CI in the same column
+    cox_model$a <- "("; cox_model$b <- "-"; cox_model$c <- ")"
+    cox_model <- cox_model[,c("HR", "a", "Lower_CI", "b", "Higher_CI", "c", "p")]
+    cox_model = unite(cox_model, "95%_CI", "a":"c", sep = "")
+    
+    #Adding row names of the variables
+    Variables <- row.names(cox_model)
+    cox_model <- cbind(Variables, cox_model)
+    
+    #Printing cox_model
+    cox_model
+  })
       
 }
 
