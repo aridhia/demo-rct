@@ -1,6 +1,7 @@
 #To use in workspace:
 #.libPaths("/home/workspace/R/3.5.0")
 
+
 #PACKAGES
 library(shiny)
 library(arsenal)
@@ -87,6 +88,12 @@ ui <- fluidPage(
                           selectInput(
                              inputId = "cox_variables",
                              label = "Choose variables to add to the model",
+                             choices = names(outcome),
+                             multiple = TRUE
+                          ),
+                          selectInput(
+                             inputId = "cox_strata",
+                             label = "Choose variables to add as strata for the model",
                              choices = names(outcome),
                              multiple = TRUE
                           )
@@ -262,7 +269,19 @@ server <- function(input, output) {
    
    #Cox Analysis fit
    cox_fit <- reactive({
-      model <- as.formula(paste0("Surv(time, primary.endpoint) ~ ", paste0(input$cox_variables, collapse = "+")))
+      
+      adjs_variables <- paste0(input$cox_variables, collapse = "+")   
+      strat_variables <- paste0("strata(", input$cox_strata, ")", collapse = "+")
+      
+      #To add stratification variables to the model
+      if(!is.null(input$cox_strata)){
+         
+         model <- as.formula(paste0("Surv(time, primary.endpoint) ~ ", adjs_variables, "+", strat_variables))
+      } else{
+         model <- as.formula(paste0("Surv(time, primary.endpoint) ~ ", adjs_variables ))
+      }
+    
+
       coxph(model, data = subset_data())
    })
    
