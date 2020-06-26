@@ -1,7 +1,6 @@
 #To use in workspace:
 #.libPaths("/home/workspace/R/3.5.0")
 
-
 #PACKAGES
 library(shiny)
 library(arsenal)
@@ -152,6 +151,10 @@ ui <- fluidPage(
                      tabPanel("Cox Model", value = 4,
                               tableOutput(
                                  outputId = "cox"
+                              ),
+                              #Print the model in text
+                              verbatimTextOutput(
+                                 outputId = "cox_model"
                               )
                      )
          )
@@ -268,37 +271,47 @@ server <- function(input, output) {
    })
    
    #Cox Analysis fit
-   cox_fit <- reactive({
+   cox_fit_text <- reactive({
       
-      adjs_variables <- paste0(input$cox_variables, collapse = "+")   
-      strat_variables <- paste0("strata(", input$cox_strata, ")", collapse = "+")
+      adjs_variables <- paste0(input$cox_variables, collapse = " + ")   
+      strat_variables <- paste0("strata(", input$cox_strata, ")", collapse = " + ")
       
       #To add stratification variables to the model
       if(!is.null(input$cox_strata)){
          
-         model <- as.formula(paste0("Surv(time, primary.endpoint) ~ ", adjs_variables, "+", strat_variables))
+         paste0("Surv(time, primary.endpoint) ~ ", adjs_variables, " + ", strat_variables)
+         
       } else{
-         model <- as.formula(paste0("Surv(time, primary.endpoint) ~ ", adjs_variables ))
+         
+         paste0("Surv(time, primary.endpoint) ~ ", adjs_variables )
       }
-    
-
-      coxph(model, data = subset_data())
+      
+   })
+   
+   #Printing the cox model in text
+   output$cox_model <- renderText({
+    #There has to be a variable sected
+      validate(need(input$cox_variables, ""))
+      cox_fit_text()
    })
    
    #Building the cox table
    output$cox <- renderTable({
+      #There has to be a variable selected
       validate(need(input$cox_variables, "Please select variables to add to the model"))
       
+      cox_fit <- coxph(as.formula(cox_fit_text()), data = subset_data())
+      
       #Extracting HR from the model
-      HR <- round(exp(coef(cox_fit())), 2)
+      HR <- round(exp(coef(cox_fit)), 2)
       
       #Extracting CI from the model
-      CI <- round(exp(confint(cox_fit())), 2)
+      CI <- round(exp(confint(cox_fit)), 2)
       #Column names for CI
       colnames(CI) <- c("Lower_CI","Higher_CI")
       
       #Extracting p value from the model
-      p <- round(coef(summary(cox_fit()))[,5], 3)
+      p <- round(coef(summary(cox_fit))[,5], 3)
       
       #Putting everything together to a dataframe
       cox_model <- as.data.frame(cbind(HR, CI, p), col.names = c("HR", "95% CI", "p value"))
@@ -320,3 +333,4 @@ server <- function(input, output) {
 
 #This function runs the ShinyApp
 shinyApp(ui, server)
+
