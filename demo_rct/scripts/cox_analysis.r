@@ -55,7 +55,7 @@ print(kable(cox_adjusted, col.names = c("Adjusted HR", "95% CI", "p value")))
 
 
 #Unadjusted Cox Regression Model - Analysis without the adjustment of previous treatments with Thiopurines, but still stratified for randomisation strata
-cox_results_unadjusted <- coxph(surv_object ~ treatmentno + strata(factor(smoker)) + strata(a_centreno), data = outcomes)
+cox_results_unadjusted <- coxph(surv_object ~ treatmentno, data = outcomes)
 
 #Extract HR, CI and p values from the Cox model
 HR_unadjusted <- round(exp(coef(cox_results_unadjusted)), 2)
