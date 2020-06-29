@@ -157,7 +157,7 @@ kable(cox_adjusted, col.names = c("Adjusted HR", "95% CI", "p value"))
  
 <<message=FALSE, echo=FALSE, warning=FALSE>>=
 
-cox_results_unadjusted <- coxph(surv_object ~ treatmentno + strata(factor(smoker)) + strata(a_centreno), data = outcomes)
+cox_results_unadjusted <- coxph(surv_object ~ treatmentno, data = outcomes)
 
 HR_unadjusted <- round(exp(coef(cox_results_unadjusted)), 2)
 CI_unadjusted <- round(exp(confint(cox_results_unadjusted)), 2)
