@@ -45,6 +45,7 @@ status_arbitration <- read.csv("./demo_rct/trial_files/tbla_IMPStatusArbitration
     #Not interested in the secondary enpoint
     subset(select = -c(secondary.endpoint, studydaysecondarydate)) %>%
     #To do the Cox analysis, the endpoint has to be coded as 1/0
+    mutate(primary_endpoint = primary.endpoint) %>%
     mutate(primary.endpoint = ifelse(primary.endpoint == "YES", 1,0))
 
 #Merging baseline and status of arbitration datasets to start building the outcomes dataset
