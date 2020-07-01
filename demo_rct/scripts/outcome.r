@@ -98,7 +98,7 @@ last_visit <- read_csv("./demo_rct/trial_files/tbla_VisitSchedule.csv") %>%
 #Addition to the outcomes dataset
 outcomes <- merge(outcomes, last_visit, by = "a_subjectno", all = TRUE) %>%
     #Add last visit to the subjects without time object
-    mutate(time = ifelse(!is.na(time), time, last_visit)) %%
+    mutate(time = ifelse(!is.na(time), time, last_visit)) %>%
     #Some subjects have changes of status after the trial follow-up period (>3.5 years), change those to the last visit
     mutate(time = ifelse(time > 3.5 * 365.25 & primary.endpoint == 0, last_visit, time))
 
