@@ -110,7 +110,7 @@ The scripts can be run in Rstudio or Rconsole:
 #From the directory demo-rct
 setwd("./demo-rct")
 #Run the baseline_char.R script
-source("./demo_rct/scripts/baseline_char.R")
+source("./demo_rct/scripts/baseline.R")
 ```
 
 ### Adding Outcomes
