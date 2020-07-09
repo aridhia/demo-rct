@@ -8,20 +8,14 @@ library(readr)
 library(survminer)
 library(survival)
 library(dplyr)
-library(forcats)
 library(tidyr)
 
 
 #Importing data
-#This data has been generated with the script outcome.R
-outcome <- read_csv("./outcomes.csv", 
-                    #Change column types of subject numbers and centre number to characters
-                    col_types = cols(a_subjectno = col_character(), a_centreno = col_character()))
+#This data has been generated with the script outcome.R in this demo.
+#For the app to run it is only necessary to have a csv file called "survival_analysis.csv" in the same folder containing information about the outcome and the time object to do the survival analysis
+data <- read_csv("./survival_analysis.csv")
 
-#Treatment allocation has to be converted into a factor
-outcome$treatmentno <- outcome$treatmentno %>% as.factor() %>%
-   #By default the reference value of treatment is "Acive", has to be reversed for the cox analysis
-   forcats::fct_rev()
 
 
 ui <- fluidPage(
@@ -33,31 +27,20 @@ ui <- fluidPage(
    sidebarLayout(
       sidebarPanel(
          
-         
-         #It's a conditional panel that will only appear in tab1, that is the tab for the subgroups
-         conditionalPanel(condition = "input.tabs == 1",
-                          radioButtons(
-                             inputId = "filtering",
-                             label = "Do you want filter the dataset?",
-                             choices = list("Yes" = 1, "No" = 0),
-                             selected = 0
-                          )
-         ),
-         
          #This will only appear in the tab2
          conditionalPanel(condition = "input.tabs == 2",
                           #Used to select the stratification variable for the analysis
                           selectInput(
                              inputId = "stratification",
                              label = "Choose a stratification variable",
-                             choices = names(outcome),
+                             choices = names(data),
                              selected = "treatmentno"
                           ),
                           #Select the variables included in the table
                           selectInput(
                              inputId = "variables",
                              label = "Choose variables: ",
-                             choices = names(outcome),
+                             choices = names(data),
                              multiple = TRUE
                           ),
                           #p value optional
@@ -74,7 +57,7 @@ ui <- fluidPage(
                           selectInput(
                              inputId = "stratification_kep",
                              label = "Choose a stratification variable",
-                             choices = names(outcome),
+                             choices = names(data),
                              selected = "treatmentno"
                           ),
                           sliderInput('xvalue', 'Survival Years =', value = 0, min = 0, max = 4, step = 0.25, round = TRUE)
@@ -87,13 +70,13 @@ ui <- fluidPage(
                           selectInput(
                              inputId = "cox_variables",
                              label = "Choose variables to add to the model",
-                             choices = names(outcome),
+                             choices = names(data),
                              multiple = TRUE
                           ),
                           selectInput(
                              inputId = "cox_strata",
                              label = "Choose variables to add as strata for the model",
-                             choices = names(outcome),
+                             choices = names(data),
                              multiple = TRUE
                           )
                           
@@ -102,7 +85,11 @@ ui <- fluidPage(
          #Will only appear when the user has decided to subset a part of the population
          conditionalPanel(condition = "input.filtering == 1",
                           p(textOutput(outputId = "caption", container = span)),
-                          textOutput("condition"))
+                          textOutput("condition")),
+        #Will appear when there is no filter applied
+         conditionalPanel(condition = "input.filtering == 0",
+                          p(textOutput(outputId = "notfilter", container = span)),
+                          textOutput("condition0"))
       ),
       
       #This will show in the main panel of the app
@@ -110,13 +97,35 @@ ui <- fluidPage(
          #The main panel will be divided in tabs
          tabsetPanel(id = "tabs",
                      
-                     #First tab is for subseting a population
-                     tabPanel("Subset", 
+                     #First tab is setting up the analysis
+                     tabPanel("Analysis set up", 
                               value = 1,
+                              
+                              selectInput(
+                                 inputId = "endpoint",
+                                 label = "Select variable with survival outcome information",
+                                 choices = names(data),
+                                 multiple = FALSE
+                              ),
+                              selectInput(
+                                 inputId = "time",
+                                 label = "Select variable with survival time information",
+                                 choices = names(data),
+                                 multiple = FALSE
+                              ),
+                              
+                              #It's a conditional panel that will only appear in tab1, that is the tab for the subgroups
+                              radioButtons(
+                                 inputId = "filtering",
+                                 label = "Do you want filter the dataset?",
+                                 choices = list("Yes" = 1, "No" = 0),
+                                 selected = 0
+                                               
+                              ),
                               #The Panel will only be visible if the user decides to filter the data by clicking "Yes" 
                               conditionalPanel(condition = "input.filtering == 1",
                                                #It will show 3 columns: Variable name, Boolean condition and filtering value
-                                               column(4, selectInput("column", "Filter By:", choices = names(outcome))),
+                                               column(4, selectInput("column", "Filter By:", choices = names(data))),
                                                column(4, selectInput("condition", "Boolean", choices = c("==", "!=", ">", "<"))),
                                                #Filtering values depend on the column chosen, so it's an output
                                                column(4, uiOutput("col_value"))
@@ -163,7 +172,7 @@ ui <- fluidPage(
 )
 
 
-server <- function(input, output) {
+server <- function(input, output, session) {
    
    #Text shown before printed condition in the sidebar panel
    local({
@@ -171,14 +180,19 @@ server <- function(input, output) {
          "Subgroup being used: "
       })
       
+      output$notfilter <- renderText({
+         "Data not filtered"
+      })
+      
       output$surv_caption <- renderText({
          "Survival Probability: "
       })
    })
    
+
    #The values shown in the third column of the subset tab, they depend on the column chosen
    output$col_value <- renderUI({
-      x <- as.data.frame(outcome %>% select(input$column))
+      x <- as.data.frame(data %>% select(input$column))
       if (!is.character(x[1,])){
          x <- na.omit(x)
          sliderInput("value", "Value", min = round(min(x)), max = round(max(x)), value = round(max(x)))
@@ -189,7 +203,7 @@ server <- function(input, output) {
    
    #String made to subset the subjects and display in the sidebar    
    filtering_string <- reactive({
-      x <- as.data.frame(outcome %>% select(input$column))
+      x <- as.data.frame(data %>% select(input$column))
       if (is.numeric(x[1, ])){
          paste0(input$column, " ", input$condition, input$value)
       }else{
@@ -207,10 +221,10 @@ server <- function(input, output) {
    subset_data <- reactive({
       #If user does not want to subset, all the dataset is used
       if (input$filtering == 0){
-         return(outcome)
+         return(data)
       } else {
-         outcome <- filter_(outcome, filtering_string())
-         return(outcome)
+         data() <- filter_(data, filtering_string())
+         return(data)
       }      
    })
    
@@ -239,7 +253,7 @@ server <- function(input, output) {
       
       
       #Survival function - for ggsurvplot has to be inside the renderPlot function
-      kmdata <- surv_fit(as.formula(paste('Surv(time,primary.endpoint) ~',input$stratification_kep)),data=subset_data())
+      kmdata <- surv_fit(as.formula(paste('Surv(', input$time, ',', input$endpoint, ') ~ ',input$stratification_kep)),data=subset_data())
       
       #Plotting the survival curves
       ggsurvplot(kmdata, pval = TRUE,
@@ -259,7 +273,7 @@ server <- function(input, output) {
    
    #Survival function outside renderPlot function
    runSur <- reactive({
-      survfit(as.formula(paste('Surv(time,primary.endpoint) ~', input$stratification_kep)), data=subset_data())
+      survfit(as.formula(paste('Surv(', input$time, ',', input$endpoint, ') ~ ', input$stratification_kep)), data=subset_data())
    })
    
    #Survival table
@@ -279,18 +293,18 @@ server <- function(input, output) {
       #To add stratification variables to the model
       if(!is.null(input$cox_strata)){
          
-         paste0("Surv(time, primary.endpoint) ~ ", adjs_variables, " + ", strat_variables)
+         paste0('Surv(', input$time, ',', input$endpoint, ') ~ ', adjs_variables, " + ", strat_variables)
          
       } else{
          
-         paste0("Surv(time, primary.endpoint) ~ ", adjs_variables )
+         paste0('Surv(', input$time, ',', input$endpoint, ') ~ ', adjs_variables )
       }
       
    })
    
    #Printing the cox model in text
    output$cox_model <- renderText({
-    #There has to be a variable sected
+      #There has to be a variable sected
       validate(need(input$cox_variables, ""))
       cox_fit_text()
    })
