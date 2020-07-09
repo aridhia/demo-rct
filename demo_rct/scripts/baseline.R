@@ -32,7 +32,7 @@ col_class <- function(dataset) {
 
 #SUBJECT DATASET
 ##Importing the dataset
-subject_char <- read_csv("./demo_rct/trial_files/tbla_Subjects.csv") %>%
+subject_char <- read_csv("./demo_rct/trial_data/tbla_Subjects.csv") %>%
     #Applying the two functions to make general changes
     basic_edit() %>%
     col_class() %>%
@@ -44,7 +44,7 @@ subject_char <- read_csv("./demo_rct/trial_files/tbla_Subjects.csv") %>%
 
 #DISEASE HISTORY DATASET
 ##Importing the dataset
-crohn_history <- read_csv("./demo_rct/trial_files/tbla_CrohnsHistory.csv") %>%
+crohn_history <- read_csv("./demo_rct/trial_data/tbla_CrohnsHistory.csv") %>%
     #General changes using the functions defined previously
     basic_edit() %>%
     col_class()
@@ -63,8 +63,7 @@ baseline <- baseline[, !colnames(baseline) %in% variables_drop]
 #CONVERSION OF SOME VARIABLES INTO FACTORS
 
 #Imorting Trial Master Lists with information of the coding of factors
-status <- read_csv("./demo_rct/trial_files/tbla_TrialStatusMasterList.csv")
-treatment <- read_csv("./demo_rct/trial_files/tbla_TreatmentNames.csv")
+status <- read_csv("./demo_rct/trial_data/tbla_TrialStatusMasterList.csv")
 
 #Factor variables with options yes/no coded as 1/2
 factors_yn <- function(x) (factor(x, levels = c(1,2), labels = c("Yes", "No")))
@@ -81,7 +80,7 @@ baseline <- baseline %>%
     #Add lebels to factorial variables and generate new variables from the existing ones
     mutate(
         #Factor using trial master lists
-        treatmentno = factor(treatmentno, levels = treatment$TreatmentNo, labels = treatment$TreatmentName),
+        treatmentno = factor(treatmentno, levels = c(1,2), labels = c("Treatment", "Placebo")),
         trialstatusid = factor(trialstatusid, levels = status$TrialStatusID, labels = status$TrialStatusText),
         #Manually generated factors - labels extracted from annonymised data dictionary
         gender = factor(gender, levels = c("F", "M"), labels = c("Female", "Male")),
