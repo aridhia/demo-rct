@@ -130,7 +130,7 @@ library(knitr)
 
 outcomes$treatmentno <- outcomes$treatmentno %>% as.factor() %>% forcats::fct_rev()
 
-cox_results_adjusted <- coxph(surv_object ~ treatmentno + strata(factor(smoker)) + strata(a_centreno) + factor(sixmp) + factor(azathioprine), data = outcomes)
+cox_results_adjusted <- coxph(surv_object ~ treatmentno + factor(smoker) + strata(a_centreno) + factor(sixmp) + factor(azathioprine), data = outcomes)
 
 HR_adjusted <- round(exp(coef(cox_results_adjusted)), 2)
 CI_adjusted <- round(exp(confint(cox_results_adjusted)), 2)
