@@ -1,0 +1,3 @@
+This app can be used to perform Survival Analysis.
+To run it it is necessary to have a csv file called "survival_analysis.csv" in the same folder as the app. Then, the app will read this file.
+In the first tab the user has to select the variables that contain the outcome and time information of the survival analysis.
