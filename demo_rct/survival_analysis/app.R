@@ -223,7 +223,7 @@ server <- function(input, output, session) {
       if (input$filtering == 0){
          return(data)
       } else {
-         data() <- filter_(data, filtering_string())
+         data <- filter_(data, filtering_string())
          return(data)
       }      
    })
