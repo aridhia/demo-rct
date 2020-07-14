@@ -1,3 +1,12 @@
 This app can be used to perform Survival Analysis.
-To run it it is necessary to have a csv file called "survival_analysis.csv" in the same folder as the app. Then, the app will read this file.
-In the first tab the user has to select the variables that contain the outcome and time information of the survival analysis.
+
+To run the app, it is necessary to have a csv file called "survival_analysis.csv" in the same folder as the app.
+
+The "survival_analysis.csv" file to use the app has to:
+  - Contain a variable about the time object of each subject for the survival analysis
+  - Contain a variable about the endpoint, coded as 1/0; being 1 if the outcome happened and 0 if it did not happen
+These two variables are the ones the user will have to select in the first tab to set up the analysis.
+
+The "survival_analysis.csv" should also contain other covariates interesting to the model or to generate the characteristics table.
+
+As the app reads the .csv columns directly it is not necessary to edit any part of the code.
