@@ -27,13 +27,15 @@ ui <- fluidPage(
    sidebarLayout(
       sidebarPanel(
          
-         #This will only appear in the tab2
+         #This will only appear in the tab2; the table tab
          conditionalPanel(condition = "input.tabs == 2",
                           #Used to select the stratification variable for the analysis
                           selectInput(
                              inputId = "stratification",
                              label = "Choose a stratification variable",
+                             #The choices come directly from the column names of the csv file given to the app 
                              choices = names(data),
+                             #This selected choice can be deleted, in our case is treatmentno to ease the demo
                              selected = "treatmentno"
                           ),
                           #Select the variables included in the table
@@ -58,6 +60,7 @@ ui <- fluidPage(
                              inputId = "stratification_kep",
                              label = "Choose a stratification variable",
                              choices = names(data),
+                              #This selected choice can be deleted, in our case is treatmentno to ease the demo
                              selected = "treatmentno"
                           ),
                           sliderInput('xvalue', 'Survival Years =', value = 0, min = 0, max = 4, step = 0.25, round = TRUE)
@@ -97,16 +100,17 @@ ui <- fluidPage(
          #The main panel will be divided in tabs
          tabsetPanel(id = "tabs",
                      
-                     #First tab is setting up the analysis
+                     #First tab will be used to set up the variables used for the survival analysis
                      tabPanel("Analysis set up", 
                               value = 1,
-                              
+                              #This selectInput object lets the user choose the variable describing wheather the participant suffered an outcome or not (1/0)
                               selectInput(
                                  inputId = "endpoint",
                                  label = "Select variable with survival outcome information",
                                  choices = names(data),
                                  multiple = FALSE
                               ),
+                              #To select the variable containing the time object for the survival analysis, that is the time of the outcome or the censored time
                               selectInput(
                                  inputId = "time",
                                  label = "Select variable with survival time information",
@@ -114,7 +118,7 @@ ui <- fluidPage(
                                  multiple = FALSE
                               ),
                               
-                              #It's a conditional panel that will only appear in tab1, that is the tab for the subgroups
+                              #Lets the user choose if they want to filter the dataset 
                               radioButtons(
                                  inputId = "filtering",
                                  label = "Do you want filter the dataset?",
@@ -122,7 +126,7 @@ ui <- fluidPage(
                                  selected = 0
                                                
                               ),
-                              #The Panel will only be visible if the user decides to filter the data by clicking "Yes" 
+                              #The Panel will only be visible if the user decides to filter the data by clicking "Yes" in the previous radioButtons 
                               conditionalPanel(condition = "input.filtering == 1",
                                                #It will show 3 columns: Variable name, Boolean condition and filtering value
                                                column(4, selectInput("column", "Filter By:", choices = names(data))),
@@ -133,7 +137,7 @@ ui <- fluidPage(
                               
                      ),
                      
-                     #Second tab is for displaying characteristics of the population under study
+                     #Second tab is for displaying a table comparing characteristics of the population under study
                      tabPanel("Table", 
                               value = 2,
                               #The output is a table
@@ -153,10 +157,12 @@ ui <- fluidPage(
                               
                               #The output is a plot
                               plotOutput(
-                                 outputId = "kep", 
+                                 outputId = "kep",
+                                 #This parameter is only to make the graph bigger
                                  height = "600px"
                               )
                      ),
+                     #Fourth tab is to develop the desired Cox Model using the covariates the user find more appropiate; it also allows to add strata to the model
                      tabPanel("Cox Model", value = 4,
                               tableOutput(
                                  outputId = "cox"
@@ -179,7 +185,7 @@ server <- function(input, output, session) {
       output$caption <- renderText({
          "Subgroup being used: "
       })
-      
+      #Text only shown if the data is not filtered
       output$notfilter <- renderText({
          "Data not filtered"
       })
@@ -190,12 +196,15 @@ server <- function(input, output, session) {
    })
    
 
-   #The values shown in the third column of the subset tab, they depend on the column chosen
+   #The values shown in the third column of the filtering depend on the column chosen, according to the column the options vary
    output$col_value <- renderUI({
+      #Select only the column choosen to apply the filter
       x <- as.data.frame(data %>% select(input$column))
+      #If the column selected is not a character, a sliderInput will appear to choose the limits of the filter
       if (!is.character(x[1,])){
          x <- na.omit(x)
          sliderInput("value", "Value", min = round(min(x)), max = round(max(x)), value = round(max(x)))
+         #If the column is a character, the choices will be the unique elements of the column
       } else{
          selectInput("value", "Value", choices = x, selected = x[1])
       }
@@ -204,6 +213,7 @@ server <- function(input, output, session) {
    #String made to subset the subjects and display in the sidebar    
    filtering_string <- reactive({
       x <- as.data.frame(data %>% select(input$column))
+      #If the variable is numeric we do not want "" 
       if (is.numeric(x[1, ])){
          paste0(input$column, " ", input$condition, input$value)
       }else{
@@ -217,9 +227,9 @@ server <- function(input, output, session) {
    })
    
    
-   #Changing the dataset according to the condition
+   #Subsetting the dataset according to the condition
    subset_data <- reactive({
-      #If user does not want to subset, all the dataset is used
+      #If user does not want to subset, the complete dataset is used
       if (input$filtering == 0){
          return(data)
       } else {
@@ -232,8 +242,10 @@ server <- function(input, output, session) {
    tb <- reactive({
       #Message if the user does not chose characteristics to compare
       validate(need(input$variables, "Please select characteristics to compare"))
+      #If the user wants the p value this code will be active
       if (input$p == "Yes"){
          tableby(formulize(input$stratification, x = input$variables), data = subset_data())
+         #When the user does not want the p value the table is coded as test=FALSE
       } else {
          my_controls <- tableby.control(test = FALSE)
          tableby(formulize(input$stratification, x=input$variables), data = subset_data(), control = my_controls)
@@ -261,9 +273,9 @@ server <- function(input, output, session) {
                  xscale = "d_y",
                  break.time.by = 365.25,
                  xlab = "Time since randomisation (years)",
+                 #This can be changed according to what the analysis is measuring
                  ylab = "Without clinical recurrence(%)",
                  legend = "bottom",
-                 legend.labs = c("Mercaptopurine", "Placebo"),
                  censor = FALSE,
                  tables.y.text = FALSE,
                  risk.table.height = 0.2)
@@ -287,6 +299,7 @@ server <- function(input, output, session) {
    #Cox Analysis fit
    cox_fit_text <- reactive({
       
+      #Create the strings that will be used to generate the cox model
       adjs_variables <- paste0(input$cox_variables, collapse = " + ")   
       strat_variables <- paste0("strata(", input$cox_strata, ")", collapse = " + ")
       
