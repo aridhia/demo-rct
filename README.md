@@ -163,14 +163,14 @@ The app reads a csv file called "survival_analysis.csv" allocated in its same fo
 It has 4 tabs, each one performing a different step of the survival analysis:
 
 1. **Fist tab** is the analysis set up. The user has to select the variable containing the information of whether the event took place or not and the time variable. It also allows to filter the dataset, the filter applied in this step will be used in the rest of the analyses.
-  * In this example, the variables to perform the survival analysis are:
-    * "primary.endpoint" with the survival outcome information
-    * "time" with the survival time information
+    * In this example, the variables to perform the survival analysis are:
+      * "primary.endpoint" with the survival outcome information
+      * "time" with the survival time information
 
 2. **Second tab** is used to develop a characteristics table comparing two populations of the study. It allows the user to choose:
-  * The stratification variable to set up the populations to compare
-  * The variables shown in the table
-  * Whether to show the p-value or not
+    * The stratification variable to set up the populations to compare
+    * The variables shown in the table
+    * Whether to show the p-value or not
   
 3. **Third tab** builds a Keplan-Meier graph with the variables selected in the first tab. It allows to choose the stratification variable and a sliding bar controls the table containing the survival probability at the chosen time. 
 
