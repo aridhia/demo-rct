@@ -156,16 +156,29 @@ mv ./*.tex ./demo_results/
 ```
 
 ### App
-A Shiny App was developed to easily visualise the survival analysis, it can be found in the folder Survival_Analysis. 
+A Shiny App was developed to easily visualise the survival analysis, it can be found in the folder survival_analysis. 
 
-It uses the outcomes.csv file to generate:
-* Characteristics table comparing subjects based on a stratification variable
-* Keplan-Meier plot
+The app reads a csv file called "survival_analysis.csv" allocated in its same folder.
 
-It also allows to subset the population based on a condition to do subgroup analysis. 
+It has 4 tabs, each one performing a different step of the survival analysis:
+
+1. **Fist tab** is the analysis set up. The user has to select the variable containing the information of whether the event took place or not and the time variable. It also allows to filter the dataset, the filter applied in this step will be used in the rest of the analyses.
+  * In this example, the variables to perform the survival analysis are:
+    * "primary.endpoint" with the survival outcome information
+    * "time" with the survival time information
+
+2. **Second tab** is used to develop a characteristics table comparing two populations of the study. It allows the user to choose:
+  * The stratification variable to set up the populations to compare
+  * The variables shown in the table
+  * Whether to show the p-value or not
+  
+3. **Third tab** builds a Keplan-Meier graph with the variables selected in the first tab. It allows to choose the stratification variable and a sliding bar controls the table containing the survival probability at the chosen time. 
+
+4. **Fourth tab** builds a Cox Model; the user can easily add variables and strata to the model by selecting different variables.
+
 
 To run the Shiny App from the console:
 ```r
 library(shiny)
-runApp("./demo_rct/Survival_Analysis/app.r")
+runApp("./demo_rct/survival_analysis/app.r")
 ```
