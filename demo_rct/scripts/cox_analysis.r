@@ -11,70 +11,51 @@ library(tidyr)
 library(knitr)
 
 
+cox_analysis <- function(surv_object){
+      # Adjusted Cox Regression Model
+      # This model is stratified by smoker status and centre number and adjusted for treatment number and previous treatments with Mercaptopurine(6-MP) or Azathioprine
+      cox_results_adjusted <- coxph(surv_object ~ treatmentno + smoker + strata(a_centreno) + sixmp + azathioprine, data = outcomes)
+      
+      # Unadjusted Cox Regression Model - Analysis without the adjustment of previous treatments with Thiopurines, but still stratified for randomisation strata
+      cox_results_unadjusted <- coxph(surv_object ~ treatmentno, data = outcomes)
+      
+
+      table_modifications <- function(cox_object){
+            # Extract HR, CI and p values from the Cox model
+            HR <- round(exp(coef(cox_object)), 2)
+            CI <- round(exp(confint(cox_object)), 2)
+            p <- round(coef(summary(cox_object))[,5], 3)
+
+            # Name the columns of CI
+            colnames(CI) <- c("Lower_CI", "Higher_CI")
+
+            # Bind columns together as a dataset
+            cox <- as.data.frame(cbind(HR, CI, p))
+
+            # Changes to join CI in a single column between brackets and separated by a hyphen 
+            cox$a <- "("; cox$b <- "-"; cox$c <- ")"
+            cox <- cox[,c("HR", "a", "Lower_CI", "b", "Higher_CI", "c", "p")]
+            cox = unite(cox, "Adjusted_95%_CI", "a":"c", sep = "")
+
+            # Print the table with the results of the adjusted cox analysis
+            return(kable(cox, col.names = c("HR", "95% CI", "p value")))
+      }
+      
+      print(table_modifications(cox_results_adjusted))
+      print(table_modifications(cox_results_unadjusted))
+
+}
+
 
 #Import data that will be used to do the analysis
 #Outcomes dataset, elaborated witht outcome.R 
-outcomes <- read_csv("./demo_rct/results/outcomes.csv")
-
-outcomes$treatmentno <- outcomes$treatmentno %>% 
-    #Treatmentno has to be converted into a factor variable
-    as.factor() %>% 
-    #By default the reference vale of treatmentno is Active (alphabetically determined). This has to be reversed
-    forcats::fct_rev()
-
+outcomes <- read_csv("./demor_rct/results/outcomes.csv")
 
 #First, create a survival object that consist of the time and whether the endpoint was reached
-surv_object <- Surv(outcomes$time, outcomes$primary.endpoint)
-
-#Adjusted Cox Regression Model
-##This model is stratified by smoker status and centre number and adjusted for treatment number and previous treatments with Mercaptopurine(6-MP) or Azathioprine
-cox_results_adjusted <- coxph(surv_object ~ treatmentno + strata(factor(smoker)) + strata(a_centreno) + factor(sixmp) + factor(azathioprine), data = outcomes)
-
-#Extract HR, CI and p values from the Cox model
-HR_adjusted <- round(exp(coef(cox_results_adjusted)), 2)
-CI_adjusted <- round(exp(confint(cox_results_adjusted)), 2)
-p_adjusted <- round(coef(summary(cox_results_adjusted))[,5], 3)
-
-#Name the columns of CI
-colnames(CI_adjusted) <- c("Lower_Adjusted_CI", "Higher_Adjusted_CI")
-
-#Bind columns together as a dataset
-cox_adjusted <- as.data.frame(cbind(HR_adjusted, CI_adjusted, p_adjusted))
-
-#Changes to join CI in a single column between brackets and separated by a hyphen 
-cox_adjusted$a <- "("; cox_adjusted$b <- "-"; cox_adjusted$c <- ")"
-cox_adjusted <- cox_adjusted[,c("HR_adjusted", "a", "Lower_Adjusted_CI", "b", "Higher_Adjusted_CI", "c", "p_adjusted")]
-cox_adjusted = unite(cox_adjusted, "Adjusted_95%_CI", "a":"c", sep = "")
-
-#Changes in the row names to make them more understandable 
-row.names(cox_adjusted) <- c("Mercaptopurine", "Previous treatments with Mercaptopurine", "Pervious treatments with Azathioprine")
-
-#Print the table with the results of the adjusted cox analysis
-print(kable(cox_adjusted, col.names = c("Adjusted HR", "95% CI", "p value")))
+primary_surv_object <- Surv(outcomes$primary.time, outcomes$primary.endpoint)
+secondary_surv_object <- Surv(outcomes$secondary.time, outcomes$secondary.endpoint)
 
 
-
-#Unadjusted Cox Regression Model - Analysis without the adjustment of previous treatments with Thiopurines, but still stratified for randomisation strata
-cox_results_unadjusted <- coxph(surv_object ~ treatmentno, data = outcomes)
-
-#Extract HR, CI and p values from the Cox model
-HR_unadjusted <- round(exp(coef(cox_results_unadjusted)), 2)
-CI_unadjusted <- round(exp(confint(cox_results_unadjusted)), 2)
-p_unadjusted <- round(coef(summary(cox_results_unadjusted))[,5], 3)
-
-#Name the columns of CI
-colnames(CI_unadjusted) <- c("Lower_Unadjusted_CI", "Higher_Unadjusted_CI")
-
-#Bind columns together as a dataset
-cox_unadjusted <- as.data.frame(cbind(HR_unadjusted, CI_unadjusted, p_unadjusted))
-
-#Changes to join CI in a single column between brackets and separated by a hyphen 
-cox_unadjusted$a <- "("; cox_unadjusted$b <- "-"; cox_unadjusted$c <- ")"
-cox_unadjusted <- cox_unadjusted[,c("HR_unadjusted", "a", "Lower_Unadjusted_CI", "b", "Higher_Unadjusted_CI", "c", "p_unadjusted")]
-cox_unadjusted = unite(cox_unadjusted, "Unadjusted_95%_CI", "a":"c", sep = "")
-
-#Changes in the row names to make them more understandable 
-row.names(cox_unadjusted) <- c("Mercaptopurine")
-
-#Print the table with the results of the adjusted cox analysis
-print(kable(cox_unadjusted, col.names = c("Unadjusted HR", "95% CI", "p value")))
+# Call cox_analysis function on primary and secondary surv_objects
+cox_analysis(primary_surv_object)
+cox_analysis(secondary_surv_object)
