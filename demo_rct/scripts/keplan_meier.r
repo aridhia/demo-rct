@@ -61,4 +61,3 @@ keplan_meier(primary_fit)
 
 # Graph for secondary endpoint
 keplan_meier(secondary_fit)
-
