@@ -41,13 +41,13 @@ subgroup_analysis <- function(fit_cox){
       if(subgroup$level[i] == "age_diagnosis"){
          subgroup$level[i] <- "Age at diagnosis"
       } else if (subgroup$level[i] == "infliximab_methotrexate"){
-         subgroup$level[i] <- "Previous Treatment with infliximab or methotrexate"
+         subgroup$level[i] <- "Previous treatment with infliximab or methotrexate"
       } else if (subgroup$level[i] == "smoker") {
          subgroup$level[i] <- "Current smoker"
       } else if (subgroup$level[i] == "surgery") {
          subgroup$level[i] <- 'Previous surgery'
       } else if (subgroup$level[i] == "thiopurines") {
-         subgroup$level[i] <- "Previous Treatment with thiopurines"
+         subgroup$level[i] <- "Previous treatment with thiopurines"
       } else if (subgroup$level[i] == "disease_duration") {
          subgroup$level[i] <- "Duration of disease"
       }
@@ -57,28 +57,28 @@ subgroup_analysis <- function(fit_cox){
    tabletext <- cbind(c("\n","\n","\n", subgroup$level, "Overall"),
                       c("Mercaptopurine","Number (%)", "outcomes",
                         ifelse(!is.na(subgroup$event_Treatment), 
-                               paste(subgroup$event_Treatment, " (", round(subgroup$event_Treatment*100/subgroup$sample_Treatment, 2), ")"),
+                               paste(subgroup$event_Treatment, " (", round(subgroup$event_Treatment*100/subgroup$sample_Treatment, 2), "%)"),
                                NA),
-                        paste(overall$event_Treatment[2], " (", round(overall$event_Treatment[2]*100/overall$sample_Treatment[2], 2), ")")),
+                        paste(overall$event_Treatment[2], " (", round(overall$event_Treatment[2]*100/overall$sample_Treatment[2], 2), "%)")),
                       c("Placebo","Number (%)", "outcomes",
                         ifelse(!is.na(subgroup$event_Placebo),
                                paste(subgroup$event_Placebo, " (", round(subgroup$event_Placebo*100/subgroup$sample_Placebo, 2), "%)"),
                                NA),
-                        paste(overall$event_Placebo[1], " (", round(overall$event_Placebo[1]*100/overall$sample_Placebo[1], 2), ")")),
+                        paste(overall$event_Placebo[1], " (", round(overall$event_Placebo[1]*100/overall$sample_Placebo[1], 2), "%)")),
                      c("\n", "\n","Hazard Ratio (95% CI)",  
                         ifelse(!is.na(subgroup$HazardRatio),
                               paste(round(subgroup$HazardRatio,2),"(",round(subgroup$Lower,2),"-",round(subgroup$Upper,2),")"),
                               NA),
                        paste(round(overall$HazardRatio[2],2),"(",round(overall$Lower[2],2),"-",round(overall$Upper[2],2),")")),
-                     c("\n", "\n","P interaction", round(subgroup$pinteraction, 2)))
+                     c("\n", "\n","P interaction", round(subgroup$pinteraction, 2), "\n"))
 
 
    forest <- forestplot(
       labeltext=tabletext, 
       graph.pos=4, 
-      mean=c(NA,NA, NA, subgroup$HazardRatio), 
-      lower=c(NA,NA, NA, subgroup$Lower), 
-      upper=c(NA, NA, NA, subgroup$Upper),
+      mean=c(NA,NA, NA, subgroup$HazardRatio, overall$HazardRatio[2]), 
+      lower=c(NA,NA, NA, subgroup$Lower, overall$Lower[2]), 
+      upper=c(NA, NA, NA,subgroup$Upper, overall$Upper[2]),
       align = 'l',
       zero=1, cex=0.9, lineheight = unit(8,'mm'), boxsize=0.2, colgap=unit(3,"mm"), 
       lwd.ci=1,
@@ -106,3 +106,4 @@ secondary_fit_cox <- coxph(Surv(secondary.time, secondary.endpoint) ~ treatmentn
 
 subgroup_analysis(primary_fit_cox)
 subgroup_analysis(secondary_fit_cox)
+
