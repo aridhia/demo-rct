@@ -10,7 +10,7 @@ library(dplyr)
 library(Hmisc)
 
 
-source("./demo_rct/scripts/functions.r")
+source("./demo_rct/scripts/function.r")
 
 
 #SUBJECT DATASET
@@ -76,7 +76,8 @@ baseline <- baseline %>%
         # Previous treatment with infliximab or methotrexate
         infliximab_methotrexate = ifelse(previousinfliximab == 1 | methotrexate == 1, "Yes", "No"),
         #Converting months from diagnosis into years
-        disease_duration = ifelse(studydaymonthsfromdiagnosis/-12 <= 1, "< 1", "> 1")
+        disease_duration = ifelse(studydaymonthsfromdiagnosis/-12 <= 1, "< 1", "> 1"),
+        years_duration = studydaymonthsfromdiagnosis/-12
     ) %>%
     #Change to factors from the lists
     mutate_at(symptoms, factor_symptoms) %>%
