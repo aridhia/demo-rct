@@ -11,7 +11,7 @@ library(Hmisc)
 
 #FUNCTIONS
 
-source("./demor_rct/scripts/functions.r")
+source("./demo_rct/scripts/function.r")
 
     
 # Dataset with information of whether each participant reached the endpoint (disease recurrence) or not and the time at whcih it happened
@@ -48,7 +48,7 @@ outcomes <- merge(status_arbitration, last_visit, by = "a_subjectno", all = TRUE
            secondary.time = ifelse(!is.na(secondary.time), secondary.time, last_visit))
 
 # Importing dataset created with baseline.r
-baseline <- read.csv("./results/baseline_factors.csv") %>%
+baseline <- read.csv("./demo_rct/results/baseline_factors.csv") %>%
     # Select only the variables important for the statistical analysis
     select(c(a_subjectno, a_centreno, treatmentno, smoker, age, azathioprine, sixmp, thiopurines, surgery, age_diagnosis, infliximab_methotrexate, disease_duration))
 
@@ -58,4 +58,4 @@ outcomes <- merge(baseline, outcomes, by = "a_subjectno", all = TRUE)
 #Write final csv
 write.csv(outcomes, "./demo_rct/results/outcomes.csv", row.names = FALSE)
 write.csv(outcomes, "./demo_rct/survival_analysis/survival_analysis.csv", row.names = FALSE)
-print("Outcome.csv created")
+

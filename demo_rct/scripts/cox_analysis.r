@@ -47,9 +47,9 @@ cox_analysis <- function(surv_object){
 }
 
 
-#Import data that will be used to do the analysis
-#Outcomes dataset, elaborated witht outcome.R 
-outcomes <- read_csv("./demor_rct/results/outcomes.csv")
+# Run the code that will generate the dataset for the analysis
+source("./demo_rct/scripts/outcome.r")
+
 
 #First, create a survival object that consist of the time and whether the endpoint was reached
 primary_surv_object <- Surv(outcomes$primary.time, outcomes$primary.endpoint)

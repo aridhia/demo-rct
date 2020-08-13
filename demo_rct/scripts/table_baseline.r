@@ -1,8 +1,13 @@
-
-library(arsenal)
+##################################################################################
+# Generates an html table comparing baseline characteristics of treatment groups #
+##################################################################################
 
 source("./demo_rct/scripts/baseline.r")
 
+library(arsenal)
+
+
+# Defining labels for the table
 label <- c(gender = 'Sex', 
           smoker = 'Present smoker', 
           age = 'Age (Years)',
@@ -29,5 +34,5 @@ tab <- summary(
       labelTranslations = label
 )
 
-
+# Saving table into results folder as an html file
 write2html(tab, "./demo_rct/results/table")
