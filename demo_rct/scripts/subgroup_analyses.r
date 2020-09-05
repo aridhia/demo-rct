@@ -83,7 +83,7 @@ subgroup_analysis <- function(fit_cox){
       zero=1, cex=0.9, lineheight = unit(8,'mm'), boxsize=0.2, colgap=unit(3,"mm"), 
       lwd.ci=1,
       graphwidth = unit(10, 'cm'),
-      txt_gp = fpTxtGp(label = gpar(cex=0.9),
+      txt_gp = fpTxtGp(label = gpar(cex=0.9, fontfamily = 'serif'),
                        ticks = gpar(cex = 0.9),
                        summary = gpar(cex = 0.9)),
       col = fpColors(box = 'black', lines = 'black', zero = 'gray50'),
