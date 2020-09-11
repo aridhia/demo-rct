@@ -67,7 +67,7 @@ The Hazard Ratio (HR):
 
 This reproduction of the TOPPIC study statistical analysis plan is intended to run it in an Aridhia Workspace. 
 
-To perform the analysis from the Git, clone the repo in the desired directory
+To perform the analysis from the Git, clone the repo in the desired directory and change to the directory called demo-rct.
  ```sh
  git clone https://github.com/aridhia/demo-rct
  cd ./demo-rct
@@ -82,22 +82,6 @@ The documents available are:
 * Annotated Case Report forms
 
 To start with, download the csv files and extract all of them in the folder called trial_data.
-
-Working with git:
-
-```sh
-#Change the directory to trial_files
-cd ./demo_rct/trial_data/
-
-#Download the zip file containing all the csv
-curl "https://datashare.is.ed.ac.uk/bitstream/handle/10283/2196/Data.zip?sequence=36&isAllowed=y" > trial_data.zip
-
-#Un zip the file
-unzip trial_data.zip
-
-#Return to the demo_rct directory
-cd ../..
-```
 
 ### Cleaning the data
 In the Anonymised data dictionary there is all the information about the what information is contained in the variables and the codification of each one. 
@@ -126,22 +110,19 @@ source("./demo_rct/scripts/outcome.r")
 ```
 
 ### Statistical Analysis
-First, the **Keplan Meier plot**:
-```r
-source("./demo_rct/scripts/keplan_meier.r")
-```
-This script will print the plot and save a copy as an image in the results folder. 
 
-Then, the **Log-Rank Test** can be performed running the script log_rank_test.r in the scripts folder.
-```r
-source("./demo_rct/scripts/log_rank_test.r")
-```
+Several scripts are used to do the different statistical analysis performed in this project:
 
-Finally, the **Cox Analysis** can be run:
-```r
-source("./demo_rct/scripts/cox_analysis.r")
-```
-The cox_analysis.R script will print in the console the results for the adjusted and unadjusted analysis.
+1. *table_baseline.r* will generate a baseline characteristics table comparing treatment groups. The table will be saved in the results folder as table.Rmd
+2. *cox_analysis.r* will print the results of the adjusted and unadjusted Cox Models for the primary and secondary endpoints of clinical recurrence.
+3. *keplan_meier.r* will print the graphs for the primary and seconday endpoints of clinical recurrence.
+4. *subgroup_analyses.r* generates the forest trees for the subgroup analyses of primary and secondary outcomes of clinical recurrence.
+4. *rutgeerts.r* will print the results of the tests for disease recurrence and remission accoring to the rutgeerts score.
+5. *calprotectin.r* will print the ROC AUC, sensitivity, specificity, PPV and NPV for two calprotectin thresholds.
+6. *ibdq.r* performs the comparison between groups as for quality of life assessed by IBDQ.
+
+The scripts *fundction.r* and *secondary_endpoints.r* are called automatically in other scripts, thus, the user does not have to run them.
+
 
 When running:
 ```r
