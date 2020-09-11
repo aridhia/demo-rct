@@ -30,6 +30,12 @@ The **Endpoints** are the measure that will be analysed and used to decide wheth
 The **primary endpoint** of the TOPPIC trial was the clinical recurrence of Crohn's disease. As the enpoint is binary (occurence of the outcome or not), the statistical analysis test used was **Cox Proportional Hazards Model**, adjusted to treatment allocation and previous treatments with mercaptopurine and azathioprine, and stratified by smoking status and recruitment site. 
 Analyses were by intention to treat, meaning all the subjects that were randomised where included in the analysis. No matter the number of doses they recieved.
 
+Ohter analyses were reproduced apart from the primary endpoint. In the following table all the reproduced analyses with the script used are described:
+
+<p align="center">
+  <img src="https://github.com/aridhia/demo-rct/blob/master/SAP.PNG">
+</p>
+
 ### Survival Analysis
 In Survival Analysis, two or more groups are compared with respect to the time to a specific event (clinical recurrence). In some cases, the event may not occur, then, this observation would be “censored” and survival time would be the time to this censored event. 
 
