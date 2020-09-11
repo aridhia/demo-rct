@@ -2,6 +2,7 @@
 ## Endoscopic recurrence #
 ##########################
 
+source("./demo_rct/scripts/secondary_endpoints.r")
 
 # Rutgeerts score week 49 - visit number 6 
 # Score cannot be more than 4
