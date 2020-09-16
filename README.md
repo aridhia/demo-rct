@@ -1,7 +1,7 @@
 # Randomised Controlled Trials Demo
 A demonstration of the reproduccion of the statistical analysis plan of the TOPPIC study: "Mercaptopurine Vs Placebo to prevent recurrence of Crohn's Disease after surgical resection: A multicentre, double-blind, randomised controlled trial" in the Aridhia Workspace.
 
-A video of this demo can be found in: http://www.youtube.com/watch?v=8JESp8J33XU
+A video showing all the steps of this demo can be found in *[Youtube](http://www.youtube.com/watch?v=8JESp8J33XU)*
 
 ## Randomized Controlled Trials
 A clinical trial is a planned experiment involving humans, their aim is to assess the safety and efficacy of new approaches before applying them in healthcare. 
