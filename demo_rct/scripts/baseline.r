@@ -10,12 +10,13 @@ library(dplyr)
 library(Hmisc)
 
 
+# Code with functions used in different scripts
 source("./demo_rct/scripts/function.r")
 
 
-#SUBJECT DATASET
+# Importing dataset with subjects' characteristics information
 subject_char <- read_csv("./demo_rct/trial_data/tbla_Subjects.csv") %>%
-    #Applying the two functions to make general changes
+    #Applying the two functions to make general changes (from function.r)
     basic_edit() %>%
     col_class() %>%
     #Calculate age in years; in the original csv file it was defined as days from the day of randomisation
@@ -24,7 +25,7 @@ subject_char <- read_csv("./demo_rct/trial_data/tbla_Subjects.csv") %>%
         age = studydaydob / -365.25,
     )
 
-# DISEASE HISTORY DATASET
+# Importing dataset with disease history of every patient
 crohn_history <- read_csv("./demo_rct/trial_data/tbla_CrohnsHistory.csv") %>%
     #General changes using the functions defined previously
     basic_edit() %>%
@@ -39,7 +40,7 @@ baseline <- merge(subject_char, crohn_history, all = TRUE)
 # Dropping the variables defined previously as variables_drop
 baseline <- baseline[, !colnames(baseline) %in% variables_drop]
 
-#CONVERSION OF SOME VARIABLES INTO FACTORS
+# CONVERSION OF SOME VARIABLES INTO FACTORS
 
 # Imorting Trial Master Lists with information of the coding of factors
 status <- read_csv("./demo_rct/trial_data/tbla_TrialStatusMasterList.csv")
@@ -75,11 +76,11 @@ baseline <- baseline %>%
         surgery = ifelse(operationnumber == 1, "No", "Yes"),
         # Previous treatment with infliximab or methotrexate
         infliximab_methotrexate = ifelse(previousinfliximab == 1 | methotrexate == 1, "Yes", "No"),
-        #Converting months from diagnosis into years
+        # Converting months from diagnosis into years
         disease_duration = ifelse(studydaymonthsfromdiagnosis/-12 <= 1, "< 1", "> 1"),
         years_duration = studydaymonthsfromdiagnosis/-12
     ) %>%
-    #Change to factors from the lists
+    # Change to factors from the lists
     mutate_at(symptoms, factor_symptoms) %>%
     mutate_at(yn, factors_yn)
 
