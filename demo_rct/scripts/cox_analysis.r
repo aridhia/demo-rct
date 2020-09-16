@@ -12,14 +12,13 @@ library(knitr)
 
 
 cox_analysis <- function(surv_object){
-      # Adjusted Cox Regression Model
-      # This model is stratified by smoker status and centre number and adjusted for treatment number and previous treatments with Mercaptopurine(6-MP) or Azathioprine
+      # Adjusted Cox Regression Model for smoking status, treatment number and previous treatments with Mercaptopurine(6-MP) or Azathioprine; and stratified by recruitment centre
       cox_results_adjusted <- coxph(surv_object ~ treatmentno + smoker + strata(a_centreno) + sixmp + azathioprine, data = outcomes)
       
-      # Unadjusted Cox Regression Model - Analysis without the adjustment of previous treatments with Thiopurines, but still stratified for randomisation strata
+      # Unadjusted Cox Regression Model
       cox_results_unadjusted <- coxph(surv_object ~ treatmentno, data = outcomes)
       
-
+      # Function to create a table with the Models results
       table_modifications <- function(cox_object){
             # Extract HR, CI and p values from the Cox model
             HR <- round(exp(coef(cox_object)), 2)
@@ -41,6 +40,7 @@ cox_analysis <- function(surv_object){
             return(kable(cox, col.names = c("HR", "95% CI", "p value")))
       }
       
+      # Calls the function table_modifications for the adjusted and unadjusted analysis
       print(table_modifications(cox_results_adjusted))
       print(table_modifications(cox_results_unadjusted))
 
@@ -51,7 +51,7 @@ cox_analysis <- function(surv_object){
 source("./demo_rct/scripts/outcome.r")
 
 
-#First, create a survival object that consist of the time and whether the endpoint was reached
+# First, create a survival object consisting of the time and whether the endpoint was reached
 primary_surv_object <- Surv(outcomes$primary.time, outcomes$primary.endpoint)
 secondary_surv_object <- Surv(outcomes$secondary.time, outcomes$secondary.endpoint)
 
