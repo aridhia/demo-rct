@@ -9,7 +9,7 @@ library(dplyr)
 library(Hmisc)
 
 
-#FUNCTIONS
+# Run code with pre-defined functions
 
 source("./demo_rct/scripts/function.r")
 
@@ -52,6 +52,7 @@ baseline <- read.csv("./demo_rct/results/baseline_factors.csv") %>%
     # Select only the variables important for the statistical analysis
     select(c(a_subjectno, a_centreno, treatmentno, smoker, age, azathioprine, sixmp, thiopurines, surgery, age_diagnosis, infliximab_methotrexate, disease_duration))
 
+# Merge to create final dataset
 outcomes <- merge(baseline, outcomes, by = "a_subjectno", all = TRUE)
 
 
