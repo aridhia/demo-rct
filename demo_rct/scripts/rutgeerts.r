@@ -1,11 +1,11 @@
-##########################
-## Endoscopic recurrence #
-##########################
+###########################
+## Endoscopic recurrence ##
+###########################
 
+# Runc script that generates dataset used for this analysis
 source("./demo_rct/scripts/secondary_endpoints.r")
 
-# Rutgeerts score week 49 - visit number 6 
-# Score cannot be more than 4
+# Dataset with information of Rutgeerts score week 49 (visit number 6); Score cannot be more than 4
 visit6 <- endoscopy %>% subset(visitno == 6 & rutgeerts <= 4)
 
 # Chi-square test - Difference in rutgeerts and recurrence between treatments
