@@ -1,6 +1,6 @@
-###############
-##KEPLAN MEIER#
-###############
+##################
+## KEPLAN MEIER ##
+##################
 
 #Packages
 library(survival)
@@ -9,22 +9,7 @@ library(readr)
 
 
 #Import data that will be used to do the analysis
-#Outcomes dataset, elaborated witht outcome.R 
 outcomes <- read_csv("./demo_rct/results/outcomes.csv")
-
-###############
-##KEPLAN MEIER#
-###############
-
-#Packages
-library(survival)
-library(survminer)
-library(readr)
-
-
-#Import data that will be used to do the analysis
-#Outcomes dataset, elaborated witht outcome.R 
-outcomes <- read_csv("./demo_rct/results/outcomes.csv") 
 
 outcomes$treatmentno <- outcomes$treatmentno %>% 
     # Treatmentno has to be converted into a factor variable
