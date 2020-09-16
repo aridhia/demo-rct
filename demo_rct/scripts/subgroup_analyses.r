@@ -10,9 +10,11 @@ library(readr)
 library(Publish)
 library(forestplot)
 
-
+# Function that generates the forest plot
 subgroup_analysis <- function(fit_cox){
+   # All the cox subgroups analyses we want to perform
    subgroup <- Publish::subgroupAnalysis(fit_cox, outcomes, treatment = 'treatmentno', subgroups = c("smoker", "thiopurines", "age_diagnosis", "surgery", "infliximab_methotrexate", "disease_duration"))
+   # Overall cox model (no subgroups)
    overall <- Publish::subgroupAnalysis(fit_cox, outcomes, treatment = 'treatmentno', subgroups = c('treatmentno'))
 
    # Add empty line between subgroups
@@ -53,7 +55,7 @@ subgroup_analysis <- function(fit_cox){
       }
    }
 
-
+   # Create the text allocated around the forest plot
    tabletext <- cbind(c("\n","\n","\n", subgroup$level, "Overall"),
                       c("Mercaptopurine","Number (%)", "outcomes",
                         ifelse(!is.na(subgroup$event_Treatment), 
@@ -72,7 +74,7 @@ subgroup_analysis <- function(fit_cox){
                        paste(round(overall$HazardRatio[2],2),"(",round(overall$Lower[2],2),"-",round(overall$Upper[2],2),")")),
                      c("\n", "\n","P interaction", round(subgroup$pinteraction, 2), "\n"))
 
-
+   # Generate the forest plot
    forest <- forestplot(
       labeltext=tabletext, 
       graph.pos=4, 
@@ -96,14 +98,15 @@ subgroup_analysis <- function(fit_cox){
    return(forest)
 }
 
-#Import data that will be used to do the analysis
-#Outcomes dataset, elaborated witht outcome.R 
+#Import data that contains the outcomes info
 outcomes <- read_csv("./demo_rct/results/outcomes.csv") 
 outcomes <- as.data.frame(outcomes)
 
+# Cox Model for primary and seconday outcomes
 primary_fit_cox <- coxph(Surv(primary.time, primary.endpoint) ~ treatmentno, data = outcomes)
 secondary_fit_cox <- coxph(Surv(secondary.time, secondary.endpoint) ~ treatmentno, data = outcomes)
 
+# Calling the function creating the forest plot
 subgroup_analysis(primary_fit_cox)
 subgroup_analysis(secondary_fit_cox)
 
