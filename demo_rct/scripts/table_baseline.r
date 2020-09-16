@@ -2,10 +2,11 @@
 # Generates an html table comparing baseline characteristics of treatment groups #
 ##################################################################################
 
-source("./demo_rct/scripts/baseline.r")
-
+# Packages
 library(arsenal)
 
+# Run the script that generates the dataset with information of interest
+source("./demo_rct/scripts/baseline.r")
 
 # Defining labels for the table
 label <- c(gender = 'Sex', 
